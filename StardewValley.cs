@@ -19,7 +19,7 @@ public class StardewValley : SimpleTCPPack
     {
         new Effect("Downgrade Items", "downgrade", ItemKind.Folder),
             // 1.3.0
-            new Effect("Backpack", "downgrade_backpack"),
+            new Effect("Backpack", "downgrade_backpack", "downgrade"),
             // 1.2.0
             new Effect("Axe", "downgrade_axe", "downgrade"),
             new Effect("Boots", "downgrade_boots", "downgrade"),
