@@ -46,7 +46,9 @@ namespace ControlValley
         private bool Running { get; set; }
         private bool Saving { get; set; }
         private bool Spawn { get; set; }
-        private Socket Socket { get; set; }
+
+        private bool paused = false;
+        public static Socket Socket { get; set; }
 
         public ControlClient()
         {
@@ -164,6 +166,8 @@ namespace ControlValley
         {
             UI.ShowInfo("Connected to Crowd Control");
 
+            var timer = new Timer(timeUpdate, null, 0, 200);
+
             try
             {
                 while (Running)
@@ -179,6 +183,19 @@ namespace ControlValley
             {
                 UI.ShowError("Disconnected from Crowd Control");
                 Socket.Close();
+            }
+        }
+
+        public void timeUpdate(System.Object state)
+        {
+            if (Saving || Game1.isTimePaused || Game1.activeClickableMenu!=null)
+            {
+                BuffThread.addTime(200);
+                paused = true;
+            } else if(paused)
+            {
+                paused = false;
+                BuffThread.unPause();
             }
         }
 

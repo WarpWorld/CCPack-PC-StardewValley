@@ -19,7 +19,7 @@ public class StardewValley : SimpleTCPPack
     {
         new Effect("Downgrade Items", "downgrade", ItemKind.Folder),
             // 1.3.0
-            new Effect("Backpack", "downgrade_backpack", "downgrade"),
+            //new Effect("Backpack", "downgrade_backpack", "downgrade"),
             // 1.2.0
             new Effect("Axe", "downgrade_axe", "downgrade"),
             new Effect("Boots", "downgrade_boots", "downgrade"),
@@ -29,6 +29,18 @@ public class StardewValley : SimpleTCPPack
             new Effect("Trash Can", "downgrade_trashcan", "downgrade"),
             new Effect("Watering Can", "downgrade_wateringcan", "downgrade"),
             new Effect("Weapon", "downgrade_weapon", "downgrade"),
+
+
+        new Effect("Upgrade Items", "upgrade", ItemKind.Folder),
+            new Effect("Axe", "upgrade_axe", "upgrade"),
+            //new Effect("Backpack", "upgrade_backpack", "upgrade"),
+            new Effect("Boots", "upgrade_boots", "upgrade"),
+            new Effect("Fishing Rod", "upgrade_fishingrod", "upgrade"),
+            new Effect("Hoe", "upgrade_hoe", "upgrade"),
+            new Effect("Pickaxe", "upgrade_pickaxe", "upgrade"),
+            new Effect("Trash Can", "upgrade_trashcan", "upgrade"),
+            new Effect("Watering Can", "upgrade_wateringcan", "upgrade"),
+            new Effect("Weapon", "upgrade_weapon", "upgrade"),
 
         new Effect("Status Effects", "status", ItemKind.Folder),
             new Effect("Adrenaline Rush", "give_buff_adrenaline", "status") { Duration = TimeSpan.FromSeconds(30) },
@@ -112,16 +124,6 @@ public class StardewValley : SimpleTCPPack
             new Effect("Wood (5)", "give_wood", "items"),
             new Effect("Stone (5)", "give_stone", "items"),
 
-        new Effect("Upgrade Items", "upgrade", ItemKind.Folder),
-            new Effect("Axe", "upgrade_axe", "upgrade"),
-            new Effect("Backpack", "upgrade_backpack", "upgrade"),
-            new Effect("Boots", "upgrade_boots", "upgrade"),
-            new Effect("Fishing Rod", "upgrade_fishingrod", "upgrade"),
-            new Effect("Hoe", "upgrade_hoe", "upgrade"),
-            new Effect("Pickaxe", "upgrade_pickaxe", "upgrade"),
-            new Effect("Trash Can", "upgrade_trashcan", "upgrade"),
-            new Effect("Watering Can", "upgrade_wateringcan", "upgrade"),
-            new Effect("Weapon", "upgrade_weapon", "upgrade"),
 
         new Effect("Warp Player", "warp", ItemKind.Folder),
             new Effect("Beach", "warp_beach", "warp"),
