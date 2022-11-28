@@ -1,4 +1,6 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Threading;
 using StardewValley;
 
@@ -6,13 +8,75 @@ namespace ControlValley
 {
     public class BuffThread
     {
-        private readonly Buff buff;
-        private readonly int duration;
+        public static List<BuffThread> threads = new List<BuffThread>();
 
-        public BuffThread(int buff, int duration)
+        private readonly Buff buff;
+        public int duration;
+        private int id;
+        private bool paused;
+
+        public static void addTime(int duration)
+        {
+            try
+            {
+                lock (threads)
+                {
+                    foreach (var thread in threads)
+                    {
+                        Interlocked.Add(ref thread.duration, duration+5);
+                        if (!thread.paused)
+                        {
+                            new CrowdResponse(thread.id, CrowdResponse.Status.STATUS_PAUSE).Send(ControlClient.Socket);
+                            thread.paused = true;
+                        }
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                UI.ShowError(e.ToString());
+            }
+        }
+        public static void unPause()
+        {
+            try
+            {
+                lock (threads)
+                {
+                    foreach (var thread in threads)
+                    {
+                        if (thread.paused)
+                        {
+                            new CrowdResponse(thread.id, CrowdResponse.Status.STATUS_RESUME).Send(ControlClient.Socket);
+                            thread.paused = false;
+                        }
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                UI.ShowError(e.ToString());
+            }
+        }    
+        
+        public BuffThread(int id, int buff, int duration)
         {
             this.buff = new Buff(buff);
             this.duration = duration;
+            this.id = id;
+            paused = false;
+
+            try
+            {
+                lock (threads)
+                {
+                    threads.Add(this);
+                }
+            }
+            catch (Exception e)
+            {
+                UI.ShowError(e.ToString());
+            }
         }
 
         public void Run()
@@ -20,8 +84,28 @@ namespace ControlValley
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             
             buff.addBuff();
-            Thread.Sleep(duration);
-            buff.removeBuff();
+
+            try
+            {
+                int time = Volatile.Read(ref duration); ;
+                while (time > 0)
+                {
+                    Interlocked.Add(ref duration, -time);
+                    Thread.Sleep(time);
+
+                    time = Volatile.Read(ref duration);
+                }
+                buff.removeBuff();
+                lock (threads)
+                {
+                    threads.Remove(this);
+                }
+                new CrowdResponse(id, CrowdResponse.Status.STATUS_STOP).Send(ControlClient.Socket);
+            }
+            catch (Exception e)
+            {
+                UI.ShowError(e.ToString());
+            }
         }
     }
 }

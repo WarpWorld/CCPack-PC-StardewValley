@@ -13,7 +13,11 @@ namespace ControlValley
             STATUS_FAILURE,
             STATUS_UNAVAIL,
             STATUS_RETRY,
-            STATUS_KEEPALIVE=255
+            STATUS_START  = 5,
+            STATUS_PAUSE  = 6,
+            STATUS_RESUME = 7,
+            STATUS_STOP   = 8,
+            STATUS_KEEPALIVE =255
         }
 
         public int id;

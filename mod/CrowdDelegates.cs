@@ -478,7 +478,7 @@ namespace ControlValley
             CrowdResponse.Status status = CrowdResponse.Status.STATUS_SUCCESS;
             string message = "";
 
-            if (Game1.player.items.Capacity == 36)
+            if (Game1.player.items.Capacity >= 36)
             {
                 status = CrowdResponse.Status.STATUS_FAILURE;
                 message = Game1.player.Name + "'s Backpack is already at maximum capacity";
@@ -700,9 +700,9 @@ namespace ControlValley
 
         private static CrowdResponse DoGiveBuff(CrowdRequest req, int buff, int duration, string name)
         {
-            new Thread(new BuffThread(buff, duration * 1000).Run).Start();
+            new Thread(new BuffThread(req.GetReqID(), buff, duration * 1000).Run).Start();
             UI.ShowInfo($"{req.GetReqViewer()} gave {Game1.player.Name} the {name} effect for {duration} seconds");
-            return new CrowdResponse(req.GetReqID());
+            return new CrowdResponse(req.GetReqID(), CrowdResponse.Status.STATUS_START);
         }
 
         private static CrowdResponse DoGiveMoney(CrowdRequest req, int amount)
