@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using CrowdControl.Common;
 using CrowdControl.Games.Packs;
 using ConnectorType = CrowdControl.Common.ConnectorType;
@@ -10,12 +9,12 @@ public class StardewValley : SimpleTCPPack
 
     public override ushort Port => 51337;
 
-    public StardewValley(IPlayer player, Func<CrowdControlBlock, bool> responseHandler, Action<Object> statusUpdateHandler)
+    public StardewValley(Player player, Func<CrowdControlBlock, bool> responseHandler, Action<Object> statusUpdateHandler)
         : base(player, responseHandler, statusUpdateHandler) { }
 
     public override Game Game { get; } = new(94, "Stardew Valley", "StardewValley", "PC", ConnectorType.SimpleTCPConnector);
 
-    public override List<Effect> Effects { get; } = new()
+    public override EffectList Effects { get; } = new Effect[]
     {
         new Effect("Downgrade Items", "downgrade", ItemKind.Folder),
             // 1.3.0
