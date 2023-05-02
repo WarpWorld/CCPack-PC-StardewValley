@@ -1,7 +1,9 @@
-﻿using System;
+﻿﻿using System;
+using System.Collections.Generic;
 using CrowdControl.Common;
-using JetBrains.Annotations;
 using ConnectorType = CrowdControl.Common.ConnectorType;
+
+namespace CrowdControl.Games.Packs;
 
 public class StardewValley : SimpleTCPPack
 {
@@ -9,12 +11,13 @@ public class StardewValley : SimpleTCPPack
 
     public override ushort Port => 51337;
 
-    public StardewValley(Player player, Func<CrowdControlBlock, bool> responseHandler, Action<Object> statusUpdateHandler)
-        : base(player, responseHandler, statusUpdateHandler) { }
+    public override ISimpleTCPPack.MessageFormat MessageFormat => ISimpleTCPPack.MessageFormat.CrowdControlLegacy;
 
-    public override Game Game { get; } = new(94, "Stardew Valley", "StardewValley", "PC", ConnectorType.SimpleTCPConnector);
+    public StardewValley(UserRecord player, Func<CrowdControlBlock, bool> responseHandler, Action<object> statusUpdateHandler) : base(player, responseHandler, statusUpdateHandler) { }
 
-    public override EffectList Effects { get; } = new Effect[]
+    public override Game Game { get; } = new("Stardew Valley", "StardewValley", "PC", ConnectorType.SimpleTCPServerConnector);
+
+    public override EffectList Effects => new List<Effect>
     {
             new Effect("Axe", "downgrade_axe"){ Category = "Downgrade Items"},
             new Effect("Boots", "downgrade_boots"){ Category = "Downgrade Items"},
