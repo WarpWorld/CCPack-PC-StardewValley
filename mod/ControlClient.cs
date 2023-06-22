@@ -196,6 +196,10 @@ namespace ControlValley
             {
                 paused = false;
                 BuffThread.unPause();
+                BuffThread.tickTime(200);
+            }  else
+            {
+                BuffThread.tickTime(200);
             }
         }
 

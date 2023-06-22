@@ -12,6 +12,7 @@ namespace ControlValley
 
         private readonly Buff buff;
         public int duration;
+        public int remain;
         private int id;
         private bool paused;
 
@@ -26,7 +27,8 @@ namespace ControlValley
                         Interlocked.Add(ref thread.duration, duration+5);
                         if (!thread.paused)
                         {
-                            new CrowdResponse(thread.id, CrowdResponse.Status.STATUS_PAUSE).Send(ControlClient.Socket);
+                            int time = Volatile.Read(ref thread.remain);
+                            new TimedResponse(thread.id, time, CrowdResponse.Status.STATUS_PAUSE).Send(ControlClient.Socket);
                             thread.paused = true;
                         }
                     }
@@ -37,6 +39,28 @@ namespace ControlValley
                 UI.ShowError(e.ToString());
             }
         }
+
+        public static void tickTime(int duration)
+        {
+            try
+            {
+                lock (threads)
+                {
+                    foreach (var thread in threads)
+                    {
+                        int time = Volatile.Read(ref thread.remain);
+                        time -= duration;
+                        if (time < 0) time = 0;
+                        Volatile.Write(ref thread.remain, time);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                UI.ShowError(e.ToString());
+            }
+        }
+
         public static void unPause()
         {
             try
@@ -47,7 +71,8 @@ namespace ControlValley
                     {
                         if (thread.paused)
                         {
-                            new CrowdResponse(thread.id, CrowdResponse.Status.STATUS_RESUME).Send(ControlClient.Socket);
+                            int time = Volatile.Read(ref thread.remain);
+                            new TimedResponse(thread.id, time, CrowdResponse.Status.STATUS_RESUME).Send(ControlClient.Socket);
                             thread.paused = false;
                         }
                     }
@@ -63,6 +88,7 @@ namespace ControlValley
         {
             this.buff = new Buff(buff);
             this.duration = duration;
+            this.remain = duration;
             this.id = id;
             paused = false;
 
@@ -100,7 +126,7 @@ namespace ControlValley
                 {
                     threads.Remove(this);
                 }
-                new CrowdResponse(id, CrowdResponse.Status.STATUS_STOP).Send(ControlClient.Socket);
+                new TimedResponse(id, 0, CrowdResponse.Status.STATUS_STOP).Send(ControlClient.Socket);
             }
             catch (Exception e)
             {

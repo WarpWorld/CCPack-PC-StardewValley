@@ -702,7 +702,7 @@ namespace ControlValley
         {
             new Thread(new BuffThread(req.GetReqID(), buff, duration * 1000).Run).Start();
             UI.ShowInfo($"{req.GetReqViewer()} gave {Game1.player.Name} the {name} effect for {duration} seconds");
-            return new CrowdResponse(req.GetReqID(), CrowdResponse.Status.STATUS_START);
+            return new TimedResponse(req.GetReqID(), duration * 1000, CrowdResponse.Status.STATUS_SUCCESS);
         }
 
         private static CrowdResponse DoGiveMoney(CrowdRequest req, int amount)
