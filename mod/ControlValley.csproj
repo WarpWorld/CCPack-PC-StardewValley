@@ -85,6 +85,7 @@
     <Compile Include="ControlClient.cs" />
     <Compile Include="CrowdDelegates.cs" />
     <Compile Include="CrowdRequest.cs" />
+    <Compile Include="TimedResponse.cs" />
     <Compile Include="CrowdResponse.cs" />
     <Compile Include="ModEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
