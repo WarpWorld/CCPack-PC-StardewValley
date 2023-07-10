@@ -37,6 +37,8 @@ namespace ControlValley
 
     public class CrowdDelegates
     {
+        public static BGM player = null;
+
         private static readonly List<KeyValuePair<string, int>> downgradeFishingRods = new List<KeyValuePair<string, int>>
         {
             new KeyValuePair<string, int>("Iridium Rod", 2),
@@ -277,6 +279,50 @@ namespace ControlValley
             return DoGiveMoney(req, 10000);
         }
 
+
+
+
+        public static CrowdResponse PlayHorseRace(ControlClient client, CrowdRequest req)
+        {
+            CrowdResponse.Status status = CrowdResponse.Status.STATUS_SUCCESS;
+            string message = "";
+
+            try
+            {
+                if (player != null) player.Dispose();
+                player = new BGM(@"C:\horserace.mp3");
+                player.Play();
+            }
+            catch(Exception e)
+            {
+                UI.ShowInfo(e.ToString());
+            }
+
+            return new CrowdResponse(req.GetReqID(), status, message);
+        }
+
+        public static CrowdResponse StopHorseRace(ControlClient client, CrowdRequest req)
+        {
+            CrowdResponse.Status status = CrowdResponse.Status.STATUS_SUCCESS;
+            string message = "";
+
+            try
+            {
+                if (player != null)
+                {
+                    player.Stop();
+                    player.Dispose();
+                    player = null;
+                }
+            }
+            catch (Exception e)
+            {
+                UI.ShowInfo(e.ToString());
+            }
+
+            return new CrowdResponse(req.GetReqID(), status, message);
+        }
+
         public static CrowdResponse GiveStardrop(ControlClient client, CrowdRequest req)
         {
             CrowdResponse.Status status = CrowdResponse.Status.STATUS_SUCCESS;
@@ -414,6 +460,7 @@ namespace ControlValley
                 if (Game1.player.Stamina > stamina)
                     Game1.player.Stamina = stamina;
                 UI.ShowInfo($"{req.GetReqViewer()} removed a Stardrop from {Game1.player.Name}");
+                
             }
 
             return new CrowdResponse(req.GetReqID(), status, message);
