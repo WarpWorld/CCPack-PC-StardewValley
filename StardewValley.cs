@@ -19,6 +19,10 @@ public class StardewValley : SimpleTCPPack
 
     public override EffectList Effects => new List<Effect>
     {
+
+            new Effect("Play Horse Race", "horserace"),
+            new Effect("Stop Horse Race", "horseraceend"),
+
             new Effect("Axe", "downgrade_axe"){ Category = "Downgrade Items"},
             new Effect("Boots", "downgrade_boots"){ Category = "Downgrade Items"},
             new Effect("Fishing Rod", "downgrade_fishingrod"){ Category = "Downgrade Items"},
