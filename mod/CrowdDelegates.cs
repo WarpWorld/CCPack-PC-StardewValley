@@ -30,6 +30,16 @@ using StardewBoots = StardewValley.Objects.Boots;
 using StardewChest = StardewValley.Objects.Chest;
 using StardewValley.Tools;
 using StardewValley.Menus;
+using System.Security.Cryptography.Pkcs;
+using System.ComponentModel.Design;
+using System.Xml.Linq;
+using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json.Linq;
+using xTile.Dimensions;
+using xTile.Tiles;
+using xTile;
+using xTile.ObjectModel;
+
 
 namespace ControlValley
 {
@@ -465,35 +475,141 @@ namespace ControlValley
 
             return new CrowdResponse(req.GetReqID(), status, message);
         }
+        public static bool CanSpawnHere(Vector2 tile)
+        {
+            Vector2 tilePosition = tile;
+
+            bool isWalkable = true;
+
+            // Check the Back layer for passability
+            Tile backLayerTile = Game1.currentLocation.map.GetLayer("Back").Tiles[(int)tilePosition.X, (int)tilePosition.Y];
+            if (backLayerTile != null)
+            {
+                backLayerTile.TileIndexProperties.TryGetValue("Passable", out PropertyValue isPassable);
+                if (isPassable == null)
+                {
+                    isWalkable = false;
+                }
+            }
+
+            // Check the Buildings layer
+            Tile buildingLayerTile = Game1.currentLocation.map.GetLayer("Buildings").Tiles[(int)tilePosition.X, (int)tilePosition.Y];
+            if (buildingLayerTile != null)
+            {
+                isWalkable = false;
+            }
+
+            // Optionally, check the Front and AlwaysFront layers
+            Tile frontLayerTile = Game1.currentLocation.map.GetLayer("Front").Tiles[(int)tilePosition.X, (int)tilePosition.Y];
+            if (frontLayerTile != null)
+            {
+                isWalkable = false;
+            }
+
+            //this will attempt to prevent monsters from spawning on tiles they shouldnt
+            //it wont make it impossible, just more unlikely in theory
+ 
+
+            return isWalkable;
+
+           
+        }
+
+
+        public static CrowdResponse SpawnMonsters(ControlClient client, CrowdRequest req, Func<Vector2, Monster> createMonster, bool spawnClose)
+        {
+            int quantity = 1;
+
+            if (req.parameters != null && req.parameters.Length > 0)
+            {
+                quantity = req.parameters[0];
+            }
+
+            List<Monster> monsters = new List<Monster>();
+
+            for (int i = 0; i < quantity; i++)
+            {
+
+                if (spawnClose)
+                {
+                    monsters.Add(createMonster(GetRandomClose()));
+                } else
+                {
+                    monsters.Add(createMonster(GetRandomNear()));
+                }
+            }
+
+            return DoSpawn(client, req, monsters);
+        }
 
         public static CrowdResponse SpawnBat(ControlClient client, CrowdRequest req)
         {
-            return DoSpawn(client, req, new Bat(GetRandomNear(), 20));
+            return SpawnMonsters(client, req, location => new Bat(location, 20),false);
+        }
+
+        public static CrowdResponse SpawnBlueSquid(ControlClient client, CrowdRequest req)
+        {
+            return SpawnMonsters(client, req, location => new BlueSquid(location), false);
+        }
+
+    
+        public static CrowdResponse SpawnSkeleton(ControlClient client, CrowdRequest req)
+        {
+            return SpawnMonsters(client, req, location => new Skeleton(location, false), false);
+        }
+
+        public static CrowdResponse SpawnSkeletonMage(ControlClient client, CrowdRequest req)
+        {
+            return SpawnMonsters(client, req, location => new Skeleton(location, true), false);
+        }
+
+
+        public static CrowdResponse SpawnRedSlime(ControlClient client, CrowdRequest req)
+        {
+            return SpawnMonsters(client, req, location => new GreenSlime(location, 105), false);
+        }
+
+
+  
+
+        public static CrowdResponse SpawnGreenSlime(ControlClient client, CrowdRequest req)
+        {
+            return SpawnMonsters(client, req, location => new GreenSlime(location, 2), true);
+        }
+
+        public static CrowdResponse SpawnFrostJelly(ControlClient client, CrowdRequest req)
+        {
+            return SpawnMonsters(client, req, location => new GreenSlime(location, 40), true);
+        }
+
+        public static CrowdResponse SpawnRedSludge(ControlClient client, CrowdRequest req)
+        {
+            return SpawnMonsters(client, req, location => new GreenSlime(location, 85), true);
         }
 
         public static CrowdResponse SpawnFly(ControlClient client, CrowdRequest req)
         {
-            return DoSpawn(client, req, new Fly(GetRandomNear()));
+            return SpawnMonsters(client, req, location => new Fly(location), false);
         }
 
         public static CrowdResponse SpawnGhost(ControlClient client, CrowdRequest req)
         {
-            return DoSpawn(client, req, new Ghost(GetRandomNear()));
+            return SpawnMonsters(client, req, location => new Ghost(location), false);
         }
 
         public static CrowdResponse SpawnLavaBat(ControlClient client, CrowdRequest req)
         {
-            return DoSpawn(client, req, new Bat(GetRandomNear(), 100));
+            return SpawnMonsters(client, req, location => new Bat(location, 100), false);
         }
 
         public static CrowdResponse SpawnFrostBat(ControlClient client, CrowdRequest req)
         {
-            return DoSpawn(client, req, new Bat(GetRandomNear(), 60));
+            return SpawnMonsters(client, req, location => new Bat(location, 60), false);
         }
 
         public static CrowdResponse SpawnSerpent(ControlClient client, CrowdRequest req)
         {
-            return DoSpawn(client, req, new Serpent(GetRandomNear()));
+            return SpawnMonsters(client, req, location => new Serpent(location), false);
         }
 
         public static CrowdResponse SpawnBomb(ControlClient client, CrowdRequest req)
@@ -817,21 +933,49 @@ namespace ControlValley
             return new CrowdResponse(req.GetReqID(), status, message);
         }
 
-        private static CrowdResponse DoSpawn(ControlClient client, CrowdRequest req, Monster monster)
+        public static CrowdResponse DoSpawn(ControlClient client, CrowdRequest req, List<Monster> monsters)
+
         {
             CrowdResponse.Status status = CrowdResponse.Status.STATUS_SUCCESS;
             string message = "";
 
+            int quantity = 1;
+
+            if (req.parameters != null && req.parameters.Length > 0)
+            {
+                quantity = req.parameters[0];
+            }
+
             if (client.CanSpawn())
             {
-                Game1.player.currentLocation.addCharacter(monster);
-                client.TrackMonster(monster);
-                UI.ShowInfo($"{req.GetReqViewer()} spawned a {monster.Name} near {Game1.player.Name}");
+                int showMessage = 0;
+                foreach (var monster in monsters)
+                {
+
+                    Random random = new Random();
+
+                    Game1.currentLocation.addCharacter(monster);
+                    client.TrackMonster(monster);
+
+                    if (quantity == 1 && showMessage == 0)
+                    {
+                        showMessage = 1;
+                        UI.ShowInfo($"{req.GetReqViewer()} spawned a {monster.Name} near {Game1.player.Name}");
+                    }
+                    else if (quantity >= 1 && showMessage == 0)
+                    {
+                        showMessage = 1;
+                        UI.ShowInfo($"{req.GetReqViewer()} spawned {quantity} {monster.Name}'s near {Game1.player.Name}");
+                    }
+
+                }
+
+                
             }
             else
             {
                 status = CrowdResponse.Status.STATUS_FAILURE;
-                message = $"Cannot spawn {monster.Name} because {Game1.player.Name} is at {Game1.player.currentLocation.Name}";
+                message = $"Cannot spawn monster because {Game1.player.Name} is at {Game1.player.currentLocation.Name}";
             }
 
             return new CrowdResponse(req.GetReqID(), status, message);
@@ -1170,12 +1314,57 @@ namespace ControlValley
 
         private static readonly float MAX_RADIUS = 400;
 
-        private static Vector2 GetRandomNear()
+        private static Random random = new Random();
+        private static Vector2 GetRandomNear(int attempt = 0)
         {
-            Random random = new Random();
-            return Game1.player.Position + new Vector2(
-                (float)((random.NextDouble() * 2 * MAX_RADIUS) - MAX_RADIUS),
-                (float)((random.NextDouble() * 2 * MAX_RADIUS) - MAX_RADIUS));
+            const int MaxAttempts = 10;
+            float RADIUS = MAX_RADIUS + (MaxAttempts * 25);
+
+            Vector2 spawnVector = Game1.player.Position + new Vector2(
+                (float)((random.NextDouble() * 2 * RADIUS) - RADIUS),
+                (float)((random.NextDouble() * 2 * RADIUS) - RADIUS));
+
+            if (attempt >= MaxAttempts)
+            {
+                //return spawnVector;
+            }
+
+
+            if (CanSpawnHere(spawnVector))
+            {
+                return spawnVector;
+            }
+            else
+            {
+                return GetRandomNear(attempt + 1);
+            }
         }
+
+        private static Vector2 GetRandomClose(int attempt = 0)
+        {
+            const int MaxAttempts = 10;
+            float RADIUS = (MAX_RADIUS / 2) + (MaxAttempts * 25);
+
+            Vector2 spawnVector = Game1.player.Position + new Vector2(
+                (float)((random.NextDouble() * 2 * RADIUS) - RADIUS),
+                (float)((random.NextDouble() * 2 * RADIUS) - RADIUS));
+
+            if (attempt >= MaxAttempts)
+            {
+                return spawnVector;
+            }
+
+
+            if (CanSpawnHere(spawnVector))
+            {
+                return spawnVector;
+            }
+            else
+            {
+                return GetRandomClose(attempt + 1);
+            }
+        }
+
+
     }
 }
