@@ -14,6 +14,7 @@ namespace ControlValley
         public int duration;
         public string type;
         public string viewer;
+        public int[] parameters;
 
         public static CrowdRequest Recieve(ControlClient client, Socket socket)
         {
@@ -44,7 +45,7 @@ namespace ControlValley
             REQUEST_TEST,
             REQUEST_START,
             REQUEST_STOP,
-            REQUEST_KEEPALIVE=255
+            REQUEST_KEEPALIVE = 255
         }
 
         public string GetReqCode()
