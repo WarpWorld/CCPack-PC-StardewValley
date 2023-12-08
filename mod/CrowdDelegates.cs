@@ -483,7 +483,7 @@ namespace ControlValley
                 }
                 
                 Game1.player.doDivorce();
-                UI.ShowInfo($"{req.GetReqViewer()} broke up {Game1.player.Name}'s marriage and they lost half their money!");
+                UI.ShowInfo($"{req.GetReqViewer()} caused {Game1.player.Name} to get a divorce.");
             }
             else
             {
