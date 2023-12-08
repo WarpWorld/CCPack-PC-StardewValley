@@ -117,6 +117,8 @@ namespace ControlValley
                 {"spawn_lavabat", CrowdDelegates.SpawnLavaBat},
                 {"spawn_serpent", CrowdDelegates.SpawnSerpent},
                 {"spawn_bomb", CrowdDelegates.SpawnBomb},
+
+
                 {"tire_10", CrowdDelegates.Tire10},
                 {"tire_25", CrowdDelegates.Tire25},
                 {"tire_50", CrowdDelegates.Tire50},
@@ -168,6 +170,40 @@ namespace ControlValley
                 {"hair_white", CrowdDelegates.WhiteHair},
                 {"hair_style", CrowdDelegates.HairStyle},
                 {"gender", CrowdDelegates.Gender},
+
+
+                {"spawn_bug", CrowdDelegates.SpawnBug},
+                {"spawn_wildernessgolem", CrowdDelegates.SpawnWildernessGolem},
+                {"give_buff_monstermusk", CrowdDelegates.GiveMonsterMuskBuff},
+                {"msg_crowdcontrolpro", CrowdDelegates.CrowdControlProMSG},
+                {"emote_sad", CrowdDelegates.PlayerEmote},
+                {"emote_heart", CrowdDelegates.PlayerEmote},
+                {"emote_exclamation", CrowdDelegates.PlayerEmote},
+                {"emote_note", CrowdDelegates.PlayerEmote},
+                {"emote_sleep", CrowdDelegates.PlayerEmote},
+                {"emote_game", CrowdDelegates.PlayerEmote},
+                {"emote_question", CrowdDelegates.PlayerEmote},
+                {"emote_x", CrowdDelegates.PlayerEmote},
+                {"emote_pause", CrowdDelegates.PlayerEmote},
+                {"emote_blush", CrowdDelegates.PlayerEmote},
+                {"emote_angry", CrowdDelegates.PlayerEmote},
+                {"emote_yes", CrowdDelegates.PlayerEmote},
+                {"emote_no", CrowdDelegates.PlayerEmote},
+                {"emote_sick", CrowdDelegates.PlayerEmote},
+                {"emote_laugh", CrowdDelegates.PlayerEmote},
+                {"emote_taunt", CrowdDelegates.PlayerEmote},
+
+                {"emote_surprised", CrowdDelegates.PlayerEmote},
+                {"emote_hi", CrowdDelegates.PlayerEmote},
+                {"emote_uh", CrowdDelegates.PlayerEmote},
+                {"emote_music", CrowdDelegates.PlayerEmote},
+                {"emote_jar", CrowdDelegates.PlayerEmote},
+                {"emote_happy", CrowdDelegates.PlayerEmote},
+
+                {"divorce", CrowdDelegates.Divorce},
+                {"removechildren", CrowdDelegates.TurnChildrenToDoves},
+                {"swimwear_on", CrowdDelegates.ChangeSwimClothes},
+                {"swimwear_off", CrowdDelegates.ChangeSwimClothes},
 
             };
         }

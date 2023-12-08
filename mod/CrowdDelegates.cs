@@ -39,6 +39,11 @@ using xTile.Dimensions;
 using xTile.Tiles;
 using xTile;
 using xTile.ObjectModel;
+using static StardewValley.Farmer;
+using StardewValley.Characters;
+using static StardewValley.Menus.CharacterCustomization;
+using System.Data.SqlTypes;
+using StardewValley.Locations;
 
 
 namespace ControlValley
@@ -217,6 +222,15 @@ namespace ControlValley
 
             return DoGiveBuff(req, Buff.darkness, dur, "Darkness");
         }
+
+        public static CrowdResponse GiveMonsterMuskBuff(ControlClient client, CrowdRequest req)
+        {
+            int dur = 30;
+            if (req.duration > 0) dur = req.duration / 1000;
+
+            return DoGiveBuff(req, Buff.spawnMonsters, dur, "Monster Musk Buff");
+        }
+
 
         public static CrowdResponse GiveBuffFrozen(ControlClient client, CrowdRequest req)
         {
@@ -452,6 +466,133 @@ namespace ControlValley
             return DoRemoveMoney(req, 10000);
         }
 
+        public static CrowdResponse Divorce(ControlClient client, CrowdRequest req)
+        {
+            CrowdResponse.Status status = CrowdResponse.Status.STATUS_SUCCESS;
+            string message = "";
+           
+
+                if (Game1.player.isMarried() && !Game1.player.divorceTonight && !(Game1.currentLocation is FarmHouse))
+            {
+
+                int money = Game1.player.Money;
+                if (money > 2)
+                {
+                    money = money/2;
+                    Game1.player.Money = (money < 0) ? 0 : money;
+                }
+                
+                Game1.player.doDivorce();
+                UI.ShowInfo($"{req.GetReqViewer()} broke up {Game1.player.Name}'s marriage and they lost half their money!");
+            }
+            else
+            {
+                status = CrowdResponse.Status.STATUS_FAILURE;
+                message = Game1.player.Name + " is not currently married.";
+            }
+
+
+            return new CrowdResponse(req.GetReqID(), status, message);
+            
+        }
+
+
+        public static CrowdResponse TurnChildrenToDoves(ControlClient client, CrowdRequest req)
+        {
+            CrowdResponse.Status status = CrowdResponse.Status.STATUS_SUCCESS;
+            string message = "";
+
+
+            if (Game1.player.getNumberOfChildren() >= 1)
+            {
+
+                int money = Game1.player.Money;
+                Game1.player.Money = money + 3;
+                Game1.player.getRidOfChildren();
+                UI.ShowInfo($"{req.GetReqViewer()} has turned {Game1.player.Name}'s children into doves!");
+            }
+            else
+            {
+                status = CrowdResponse.Status.STATUS_FAILURE;
+                message = Game1.player.Name + " is currently lucky and does not have any children... Yet...";
+            }
+
+
+            return new CrowdResponse(req.GetReqID(), status, message);
+
+        }
+
+
+
+        public static CrowdResponse ChangeSwimClothes(ControlClient client, CrowdRequest req)
+        {
+            CrowdResponse.Status status = CrowdResponse.Status.STATUS_SUCCESS;
+            string message = "";
+
+            string code = req.code;
+            int underScore = code.IndexOf("_");
+            string swimwear = code.Substring(underScore + 1);
+
+            if (swimwear == "on" && !Game1.player.bathingClothes.Value)
+            {
+                Game1.player.changeIntoSwimsuit();
+                UI.ShowInfo($"{req.GetReqViewer()} forced you to wear swimwear!");
+            } else if (swimwear == "off" && Game1.player.bathingClothes.Value)
+            {
+                Game1.player.changeOutOfSwimSuit();
+                UI.ShowInfo($"{req.GetReqViewer()} has returned your clothes to you.");
+            }
+            else
+            {
+                status = CrowdResponse.Status.STATUS_FAILURE;
+                message = Game1.player.Name + " can't change their clothes for some reason.";
+            }
+
+
+
+            return new CrowdResponse(req.GetReqID(), status, message);
+
+        }
+
+
+        public static CrowdResponse PlayerEmote(ControlClient client, CrowdRequest req)
+        {
+
+            CrowdResponse.Status status = CrowdResponse.Status.STATUS_SUCCESS;
+            string message = "";
+            //if (!Game1.eventUp && !UsingTool && (!IsLocalPlayer || Game1.activeClickableMenu == null) && !isRidingHorse() && !IsSitting() && !base.IsEmoting && CanMove)
+
+            if (Game1.player.CanEmote() && Game1.player.CanMove)
+            {
+                string code = req.code;
+                int underScore = code.IndexOf("_");
+                string emote = code.Substring(underScore + 1);
+
+
+                //Game1.player.FarmerSprite.PauseForSingleAnimation = false;
+                //Game1.player.faceDirection(1);
+                //Game1.player.FarmerSprite.animateOnce(new List<FarmerSprite.AnimationFrame>
+                //{
+                //    new FarmerSprite.AnimationFrame(101, 1000, 0, secondaryArm: false, Game1.player.FacingDirection == 3),
+                //    new FarmerSprite.AnimationFrame(6, 1, secondaryArm: false, Game1.player.FacingDirection == 3)
+                //}.ToArray());
+
+                //Game1.player.changeHat(1);
+                
+
+                Game1.player.performPlayerEmote(emote);
+                UI.ShowInfo($"{req.GetReqViewer()} forced {Game1.player.Name} to emote {emote}!");
+            } else {
+                status = CrowdResponse.Status.STATUS_FAILURE;
+                message = Game1.player.Name + " currently cannot emote/move.";
+            }
+
+
+            return new CrowdResponse(req.GetReqID(), status, message);
+
+        }
+
+
         public static CrowdResponse RemoveStardrop(ControlClient client, CrowdRequest req)
         {
             CrowdResponse.Status status = CrowdResponse.Status.STATUS_SUCCESS;
@@ -555,7 +696,7 @@ namespace ControlValley
     
         public static CrowdResponse SpawnSkeleton(ControlClient client, CrowdRequest req)
         {
-            return SpawnMonsters(client, req, location => new Skeleton(location, false), false);
+            return SpawnMonsters(client, req, location => new Skeleton(location, true), false);
         }
 
         public static CrowdResponse SpawnSkeletonMage(ControlClient client, CrowdRequest req)
@@ -568,9 +709,6 @@ namespace ControlValley
         {
             return SpawnMonsters(client, req, location => new GreenSlime(location, 105), false);
         }
-
-
-  
 
         public static CrowdResponse SpawnGreenSlime(ControlClient client, CrowdRequest req)
         {
@@ -591,6 +729,17 @@ namespace ControlValley
         {
             return SpawnMonsters(client, req, location => new Fly(location), false);
         }
+
+        public static CrowdResponse SpawnBug(ControlClient client, CrowdRequest req)
+        {
+            return SpawnMonsters(client, req, location => new Bug(location, 20), false);
+        }
+
+        public static CrowdResponse SpawnWildernessGolem(ControlClient client, CrowdRequest req)
+        {
+            return SpawnMonsters(client, req, location => new RockGolem(location, 35), true);
+        }
+
 
         public static CrowdResponse SpawnGhost(ControlClient client, CrowdRequest req)
         {
@@ -857,6 +1006,8 @@ namespace ControlValley
                 status = CrowdResponse.Status.STATUS_FAILURE;
                 message = Game1.player.Name + " is already at maximum energy";
             }
+
+               
 
             return new CrowdResponse(req.GetReqID(), status, message);
         }
@@ -1142,6 +1293,12 @@ namespace ControlValley
         {
             return SendMail(req, $"Hello, is this @?^^This is {req.GetReqViewer()} with Microsoft technical support and I am calling you today about a problem we have detected in your computer.^^If you could allow me to remote access your computer I can walk you through fixing the issue for a support fee of $1.99 a minute.", "tech");
         }
+
+        public static CrowdResponse CrowdControlProMSG(ControlClient client, CrowdRequest req)
+        {
+            return SendMail(req, "Dear @,^^    This is your reminder to purchase Crowd Control Pro!", "tech");
+        }
+
 
         private static CrowdResponse GiveItem(CrowdRequest req, Item item)
         {
