@@ -37,7 +37,7 @@ namespace ControlValley
         public static readonly string CV_HOST = "127.0.0.1";
         public static readonly int CV_PORT = 51337;
 
-        private static readonly string[] _no_spawn = {"hospital", "islandsouth"};
+        private static readonly string[] _no_spawn = { "hospital", "islandsouth" };
 
         private Dictionary<string, CrowdDelegate> Delegate { get; set; }
         private IPEndPoint Endpoint { get; set; }
@@ -234,16 +234,18 @@ namespace ControlValley
 
         public void timeUpdate(System.Object state)
         {
-            if (Saving || Game1.isTimePaused || Game1.activeClickableMenu!=null)
+            if (Saving || Game1.isTimePaused || Game1.activeClickableMenu != null)
             {
                 BuffThread.addTime(200);
                 paused = true;
-            } else if(paused)
+            }
+            else if (paused)
             {
                 paused = false;
                 BuffThread.unPause();
                 BuffThread.tickTime(200);
-            }  else
+            }
+            else
             {
                 BuffThread.tickTime(200);
             }
@@ -255,9 +257,14 @@ namespace ControlValley
         public void NetworkLoop()
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-            while (Running)
+            int maxAttempts = 3;
+            int attempts = 0;
+
+            while (Running && attempts < maxAttempts)
             {
                 UI.ShowInfo("Attempting to connect to Crowd Control");
+                if (attempts == maxAttempts - 1) UI.ShowError("Final connection attempt. Make sure Crowd Control is running.");
+
 
                 try
                 {
@@ -275,7 +282,8 @@ namespace ControlValley
                     UI.ShowError("Failed to connect to Crowd Control");
                 }
 
-                Thread.Sleep(10000);
+                attempts++;
+                Thread.Sleep(5000);
             }
         }
 
