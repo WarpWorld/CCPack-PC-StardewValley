@@ -31,94 +31,94 @@ namespace ControlValley
     {
         public static readonly WeaponClass Club = new WeaponClass()
         {
-            new SingleWeaponTier("Wood Club", new MeleeWeapon(24)),
-            new SingleWeaponTier("Wood Mallet", new MeleeWeapon(27)),
-            new SingleWeaponTier("Lead Rod", new MeleeWeapon(26)),
-            new SingleWeaponTier("Kudgel", new MeleeWeapon(46)),
-            new SingleWeaponTier("The Slammer", new MeleeWeapon(28)),
-            new SingleWeaponTier("Galaxy Hammer", new MeleeWeapon(29)),
-            new SingleWeaponTier("Dwarf Hammer", new MeleeWeapon(55)),
-            new SingleWeaponTier("Dragontooth Club", new MeleeWeapon(58)),
-            new SingleWeaponTier("Infinity Gavel", new MeleeWeapon(63))
+            new SingleWeaponTier("Wood Club", new MeleeWeapon("24")),
+            new SingleWeaponTier("Wood Mallet", new MeleeWeapon("27")),
+            new SingleWeaponTier("Lead Rod", new MeleeWeapon("26")),
+            new SingleWeaponTier("Kudgel", new MeleeWeapon("46")),
+            new SingleWeaponTier("The Slammer", new MeleeWeapon("28")),
+            new SingleWeaponTier("Galaxy Hammer", new MeleeWeapon("29")),
+            new SingleWeaponTier("Dwarf Hammer", new MeleeWeapon("55")),
+            new SingleWeaponTier("Dragontooth Club", new MeleeWeapon("58")),
+            new SingleWeaponTier("Infinity Gavel", new MeleeWeapon("63"))
         };
 
         public static readonly WeaponClass Dagger = new WeaponClass()
         {
             new MultiWeaponTier()
             {
-                new KeyValuePair<string, Tool>("Carving Knife", new MeleeWeapon(16)),
-                new KeyValuePair<string, Tool>("Iron Dirk", new MeleeWeapon(17)),
-                new KeyValuePair<string, Tool>("Wind Spire", new MeleeWeapon(22))
+                new KeyValuePair<string, Tool>("Carving Knife", new MeleeWeapon("16")),
+                new KeyValuePair<string, Tool>("Iron Dirk", new MeleeWeapon("17")),
+                new KeyValuePair<string, Tool>("Wind Spire", new MeleeWeapon("22"))
             },
-            new SingleWeaponTier("Elf Blade", new MeleeWeapon(20)),
+            new SingleWeaponTier("Elf Blade", new MeleeWeapon("20")),
             new MultiWeaponTier()
             {
-                new KeyValuePair<string, Tool>("Burglar's Shank", new MeleeWeapon(18)),
-                new KeyValuePair<string, Tool>("Crystal Dagger", new MeleeWeapon(21)),
-                new KeyValuePair<string, Tool>("Wooden Blade", new MeleeWeapon(19))
+                new KeyValuePair<string, Tool>("Burglar's Shank", new MeleeWeapon("18")),
+                new KeyValuePair<string, Tool>("Crystal Dagger", new MeleeWeapon("21")),
+                new KeyValuePair<string, Tool>("Wooden Blade", new MeleeWeapon("19"))
             },
-            new SingleWeaponTier("Broken Trident", new MeleeWeapon(51)),
+            new SingleWeaponTier("Broken Trident", new MeleeWeapon("51")),
             new MultiWeaponTier()
             {
-                new KeyValuePair<string, Tool>("Wicked Kris", new MeleeWeapon(45)),
-                new KeyValuePair<string, Tool>("Galaxy Dagger", new MeleeWeapon(23))
+                new KeyValuePair<string, Tool>("Wicked Kris", new MeleeWeapon("45")),
+                new KeyValuePair<string, Tool>("Galaxy Dagger", new MeleeWeapon("23"))
             },
-            new SingleWeaponTier("Dwarf Dagger", new MeleeWeapon(56)),
+            new SingleWeaponTier("Dwarf Dagger", new MeleeWeapon("56")),
             new MultiWeaponTier()
             {
-                new KeyValuePair<string, Tool>("Dragontooth Shiv", new MeleeWeapon(59)),
-                new KeyValuePair<string, Tool>("Iridium Needle", new MeleeWeapon(61))
+                new KeyValuePair<string, Tool>("Dragontooth Shiv", new MeleeWeapon("59")),
+                new KeyValuePair<string, Tool>("Iridium Needle", new MeleeWeapon("61"))
             },
-            new SingleWeaponTier("Infinity Dagger", new MeleeWeapon(64))
+            new SingleWeaponTier("Infinity Dagger", new MeleeWeapon("64"))
         };
 
         public static readonly WeaponClass Sword = new WeaponClass()
         {
             new MultiWeaponTier()
             {
-                new KeyValuePair<string, Tool>("Rusty Sword", new MeleeWeapon(0)),
-                new KeyValuePair<string, Tool>("Steel Smallsword", new MeleeWeapon(11)),
-                new KeyValuePair<string, Tool>("Wooden Blade", new MeleeWeapon(12))
+                new KeyValuePair<string, Tool>("Rusty Sword", new MeleeWeapon("0")),
+                new KeyValuePair<string, Tool>("Steel Smallsword", new MeleeWeapon("11")),
+                new KeyValuePair<string, Tool>("Wooden Blade", new MeleeWeapon("12"))
             },
             new MultiWeaponTier()
             {
-                new KeyValuePair<string, Tool>("Pirate's Sword", new MeleeWeapon(43)),
-                new KeyValuePair<string, Tool>("Silver Saber", new MeleeWeapon(1))
+                new KeyValuePair<string, Tool>("Pirate's Sword", new MeleeWeapon("43")),
+                new KeyValuePair<string, Tool>("Silver Saber", new MeleeWeapon("1"))
             },
             new MultiWeaponTier()
             {
-                new KeyValuePair<string, Tool>("Cutlass", new MeleeWeapon(44)),
-                new KeyValuePair<string, Tool>("Forest Sword", new MeleeWeapon(15)),
-                new KeyValuePair<string, Tool>("Iron Edge", new MeleeWeapon(6))
+                new KeyValuePair<string, Tool>("Cutlass", new MeleeWeapon("44")),
+                new KeyValuePair<string, Tool>("Forest Sword", new MeleeWeapon("15")),
+                new KeyValuePair<string, Tool>("Iron Edge", new MeleeWeapon("6"))
             },
-            new SingleWeaponTier("Insect Head", new MeleeWeapon(13)),
+            new SingleWeaponTier("Insect Head", new MeleeWeapon("13")),
             new MultiWeaponTier()
             {
-                new KeyValuePair<string, Tool>("Bone Sword", new MeleeWeapon(5)),
-                new KeyValuePair<string, Tool>("Claymore", new MeleeWeapon(10)),
-                new KeyValuePair<string, Tool>("Neptune's Glaive", new MeleeWeapon(14)),
-                new KeyValuePair<string, Tool>("Templar's Blade", new MeleeWeapon(7))
-            },
-            new MultiWeaponTier()
-            {
-                new KeyValuePair<string, Tool>("Obsidian Edge", new MeleeWeapon(8)),
-                new KeyValuePair<string, Tool>("Ossified Blade", new MeleeWeapon(60))
+                new KeyValuePair<string, Tool>("Bone Sword", new MeleeWeapon("5")),
+                new KeyValuePair<string, Tool>("Claymore", new MeleeWeapon("10")),
+                new KeyValuePair<string, Tool>("Neptune's Glaive", new MeleeWeapon("14")),
+                new KeyValuePair<string, Tool>("Templar's Blade", new MeleeWeapon("7"))
             },
             new MultiWeaponTier()
             {
-                new KeyValuePair<string, Tool>("Tempered Broadsword", new MeleeWeapon(52)),
-                new KeyValuePair<string, Tool>("Yeti Tooth", new MeleeWeapon(48))
+                new KeyValuePair<string, Tool>("Obsidian Edge", new MeleeWeapon("8")),
+                new KeyValuePair<string, Tool>("Ossified Blade", new MeleeWeapon("60"))
             },
-            new SingleWeaponTier("Steel Falchion", new MeleeWeapon(50)),
-            new SingleWeaponTier("Dark Sword", new MeleeWeapon(2)),
-            new SingleWeaponTier("Lava Katana", new MeleeWeapon(9)),
             new MultiWeaponTier()
             {
-                new KeyValuePair<string, Tool>("Dragontooth Cutlass", new MeleeWeapon(57)),
-                new KeyValuePair<string, Tool>("Dwarf Sword", new MeleeWeapon(54)),
-                new KeyValuePair<string, Tool>("Galaxy Sword", new MeleeWeapon(4))
+                new KeyValuePair<string, Tool>("Tempered Broadsword", new MeleeWeapon("52")),
+                new KeyValuePair<string, Tool>("Yeti Tooth", new MeleeWeapon("48"))
             },
-            new SingleWeaponTier("Infinity Blade", new MeleeWeapon(62))
+            new SingleWeaponTier("Steel Falchion", new MeleeWeapon("50")),
+            new SingleWeaponTier("Dark Sword", new MeleeWeapon("2")),
+            new SingleWeaponTier("Lava Katana", new MeleeWeapon("9")),
+            new MultiWeaponTier()
+            {
+                new KeyValuePair<string, Tool>("Dragontooth Cutlass", new MeleeWeapon("57")),
+                new KeyValuePair<string, Tool>("Dwarf Sword", new MeleeWeapon("54")),
+                new KeyValuePair<string, Tool>("Galaxy Sword", new MeleeWeapon("4"))
+            },
+            new SingleWeaponTier("Infinity Blade", new MeleeWeapon("62"))
         };
 
         public bool DoDowngrade()

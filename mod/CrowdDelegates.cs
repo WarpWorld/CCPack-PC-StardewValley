@@ -44,7 +44,8 @@ using StardewValley.Characters;
 using static StardewValley.Menus.CharacterCustomization;
 using System.Data.SqlTypes;
 using StardewValley.Locations;
-
+using System.Linq;
+using System.Reflection;
 
 namespace ControlValley
 {
@@ -53,20 +54,6 @@ namespace ControlValley
     public class CrowdDelegates
     {
         public static BGM player = null;
-
-        private static readonly List<KeyValuePair<string, int>> downgradeFishingRods = new List<KeyValuePair<string, int>>
-        {
-            new KeyValuePair<string, int>("Iridium Rod", 2),
-            new KeyValuePair<string, int>("Fiberglass Rod", 0),
-            new KeyValuePair<string, int>("Bamboo Pole", 1)
-        };
-
-        private static readonly List<KeyValuePair<string, int>> upgradeFishingRods = new List<KeyValuePair<string, int>>
-        {
-            new KeyValuePair<string, int>("Training Rod", 0),
-            new KeyValuePair<string, int>("Bamboo Pole", 2),
-            new KeyValuePair<string, int>("Fiberglass Rod", 3)
-        };
 
         public static CrowdResponse DowngradeAxe(ControlClient client, CrowdRequest req)
         {
@@ -95,8 +82,58 @@ namespace ControlValley
                 else
                 {
                     Game1.player.boots.Value = boots;
-                    Game1.player.changeShoeColor(boots.indexInColorSheet);
+                    Game1.player.changeShoeColor(boots.indexInColorSheet.ToString());
                     UI.ShowInfo($"{req.GetReqViewer()} downgraded {Game1.player.Name}'s Boots");
+                }
+            }
+
+            return new CrowdResponse(req.GetReqID(), status, message);
+        }
+
+
+        public static CrowdResponse UpgradeFishingRod(ControlClient client, CrowdRequest req)
+        {
+            int id = req.GetReqID();
+
+            Tool tool;
+
+            tool = Game1.player.getToolFromName("Bamboo Pole");
+            if (tool == null) tool = Game1.player.getToolFromName("Fiberglass Rod");
+            if (tool == null) tool = Game1.player.getToolFromName("Training Rod");
+            if (tool == null) tool = Game1.player.getToolFromName("Iridium Rod");
+            if (tool == null) tool = Game1.player.getToolFromName("Fishing Rod");
+            if (tool == null) tool = Game1.player.getToolFromName("Fishing Pole");
+            if (tool == null) tool = Game1.player.getToolFromName("FishingRod");
+            if (tool == null) tool = Game1.player.getToolFromName("FishingPole");
+
+            CrowdResponse.Status status = CrowdResponse.Status.STATUS_SUCCESS;
+            string message = "";
+
+
+            if (tool == null)
+            {
+                status = CrowdResponse.Status.STATUS_FAILURE;
+                message = $"{Game1.player.Name}'s fishing rod is already at the highest upgrade level";
+            }
+            else
+            {
+                int level = tool.UpgradeLevel;
+                if (level == 3)
+                    status = CrowdResponse.Status.STATUS_FAILURE;
+                else
+                {
+                    int index = Game1.player.Items.IndexOf(tool);
+                    Game1.player.removeItemFromInventory(tool);
+                    Tool add = null;
+
+                    if (level == 0) level = 1;
+                    else if (level == 1) level = -1;
+
+                    add = new FishingRod(level + 1);
+
+                    Game1.player.addItemToInventory(add, index);
+
+                    UI.ShowInfo($"{req.GetReqViewer()} upgraded {Game1.player.Name}'s fishing rod");
                 }
             }
 
@@ -107,19 +144,49 @@ namespace ControlValley
         {
             int id = req.GetReqID();
 
-            foreach (KeyValuePair<string, int> downgrade in downgradeFishingRods)
-            {
-                Tool tool = Game1.player.getToolFromName(downgrade.Key);
-                if (tool != null)
-                {
-                    tool.UpgradeLevel = downgrade.Value;
-                    UI.ShowInfo($"{req.GetReqViewer()} downgraded {Game1.player.Name}'s Fishing Rod");
+            Tool tool;
+            
+            tool = Game1.player.getToolFromName("Bamboo Pole");
+            if (tool == null) tool = Game1.player.getToolFromName("Fiberglass Rod");
+            if (tool == null) tool = Game1.player.getToolFromName("Training Rod");
+            if (tool == null) tool = Game1.player.getToolFromName("Iridium Rod");
+            if (tool == null) tool = Game1.player.getToolFromName("Fishing Rod");
+            if (tool == null) tool = Game1.player.getToolFromName("Fishing Pole");
+            if (tool == null) tool = Game1.player.getToolFromName("FishingRod");
+            if (tool == null) tool = Game1.player.getToolFromName("FishingPole");
 
-                    return new CrowdResponse(id);
+            CrowdResponse.Status status = CrowdResponse.Status.STATUS_SUCCESS;
+            string message = "";
+
+
+            if (tool == null)
+            {
+                status = CrowdResponse.Status.STATUS_FAILURE;
+                message = $"{Game1.player.Name}'s fishing rod is already at the highest upgrade level";
+            }
+            else
+            {
+                int level = tool.UpgradeLevel;
+                if (level == 1)
+                    status = CrowdResponse.Status.STATUS_FAILURE;
+                else
+                {
+                    int index = Game1.player.Items.IndexOf(tool);
+                    Game1.player.removeItemFromInventory(tool);
+                    Tool add = null;
+
+                    if (level == 0) level = 2;
+                    else if (level == 2) level = 1;
+
+                    add = new FishingRod( level - 1);
+
+                    Game1.player.addItemToInventory(add, index);
+
+                    UI.ShowInfo($"{req.GetReqViewer()} downgraded {Game1.player.Name}'s fishing rod");
                 }
             }
 
-            return new CrowdResponse(id, CrowdResponse.Status.STATUS_FAILURE, Game1.player.Name + "'s Fishing Rod is already at the lowest upgrade level");
+            return new CrowdResponse(req.GetReqID(), status, message);
         }
 
         public static CrowdResponse DowngradeHoe(ControlClient client, CrowdRequest req)
@@ -269,7 +336,7 @@ namespace ControlValley
             int dur = 120;
             if (req.duration > 0) dur = req.duration / 1000;
 
-            return DoGiveBuff(req, Buff.speed, dur, "Speed Buff");
+            return DoGiveBuff(req, Buff.speed.ToString(), dur, "Speed Buff");
         }
 
         public static CrowdResponse GiveBuffTipsy(ControlClient client, CrowdRequest req)
@@ -361,7 +428,16 @@ namespace ControlValley
             else
             {
                 stamina += 34;
-                Game1.player.MaxStamina = stamina;
+                try
+                {
+                    var field = typeof(Farmer).GetField("maxStamina", BindingFlags.Instance | BindingFlags.Public);
+                    field.SetValue(Game1.player, new Netcode.NetInt(stamina));
+                }
+                catch(Exception e)
+                {
+                    UI.ShowError(e.ToString());
+                }
+
                 Game1.player.Stamina = stamina;
                 UI.ShowInfo($"{req.GetReqViewer()} gave {Game1.player.Name} a Stardrop");
             }
@@ -472,7 +548,7 @@ namespace ControlValley
             string message = "";
            
 
-                if (Game1.player.isMarried() && !Game1.player.divorceTonight && !(Game1.currentLocation is FarmHouse))
+                if (Game1.player.isMarriedOrRoommates() && !Game1.player.divorceTonight.Value && !(Game1.currentLocation is FarmHouse))
             {
 
                 int money = Game1.player.Money;
@@ -607,7 +683,18 @@ namespace ControlValley
             else
             {
                 stamina -= 34;
-                Game1.player.MaxStamina = stamina;
+
+                try
+                {
+                    var field = typeof(Farmer).GetField("maxStamina", BindingFlags.Instance | BindingFlags.Public);
+                    field.SetValue(Game1.player, new Netcode.NetInt(stamina));
+                }
+                catch (Exception e)
+                {
+                    UI.ShowError(e.ToString());
+                }
+
+
                 if (Game1.player.Stamina > stamina)
                     Game1.player.Stamina = stamina;
                 UI.ShowInfo($"{req.GetReqViewer()} removed a Stardrop from {Game1.player.Name}");
@@ -790,7 +877,7 @@ namespace ControlValley
             CrowdResponse.Status status = CrowdResponse.Status.STATUS_SUCCESS;
             string message = "";
 
-            if (Game1.player.items.Capacity >= 36)
+            if (Game1.player.Items.Count >= 36)
             {
                 status = CrowdResponse.Status.STATUS_FAILURE;
                 message = Game1.player.Name + "'s Backpack is already at maximum capacity";
@@ -826,7 +913,7 @@ namespace ControlValley
                 else
                 {
                     Game1.player.boots.Value = boots;
-                    Game1.player.changeShoeColor(boots.indexInColorSheet);
+                    Game1.player.changeShoeColor(boots.indexInColorSheet.ToString());
                     UI.ShowInfo($"{req.GetReqViewer()} upgraded {Game1.player.Name}'s Boots");
                 }
             }
@@ -834,24 +921,6 @@ namespace ControlValley
             return new CrowdResponse(req.GetReqID(), status, message);
         }
 
-        public static CrowdResponse UpgradeFishingRod(ControlClient client, CrowdRequest req)
-        {
-            int id = req.GetReqID();
-
-            foreach (KeyValuePair<string, int> upgrade in upgradeFishingRods)
-            {
-                Tool tool = Game1.player.getToolFromName(upgrade.Key);
-                if (tool != null)
-                {
-                    tool.UpgradeLevel = upgrade.Value;
-                    UI.ShowInfo($"{req.GetReqViewer()} upgraded {Game1.player.Name}'s Fishing Rod");
-
-                    return new CrowdResponse(id);
-                }
-            }
-
-            return new CrowdResponse(id, CrowdResponse.Status.STATUS_FAILURE, Game1.player.Name + "'s Fishing Rod is already at the highest upgrade level");
-        }
 
         public static CrowdResponse UpgradeHoe(ControlClient client, CrowdRequest req)
         {
@@ -950,16 +1019,61 @@ namespace ControlValley
         {
             var forest = (StardewValley.Locations.Forest) Game1.getLocationFromName("Forest");
 
-            if (forest!=null)
+            //forest.obsolete_log;
+
+            foreach (var res in forest.resourceClumps)
             {
-                if (forest.log != null)
-                {
-                    if(!forest.log.isPassable() || forest.log.health > 0) if (Game1.stats.DaysPlayed < 31U) return new CrowdResponse(req.GetReqID(), CrowdResponse.Status.STATUS_FAILURE, "Blocked");
-                }
+                //UI.ShowInfo($"resource: {res.ToString()}");
+                if (!res.isPassable() || res.health.Value > 0) return new CrowdResponse(req.GetReqID(), CrowdResponse.Status.STATUS_FAILURE, "Blocked");
             }
 
 
+
             return DoWarp(req, "Woods", 55, 15);
+        }
+
+
+        private static CrowdResponse DoUpgrade(CrowdRequest req, string toolName, int max = 4)
+        {
+            CrowdResponse.Status status = CrowdResponse.Status.STATUS_SUCCESS;
+            string message = "";
+
+            Tool tool = Game1.player.getToolFromName(toolName);
+            if (tool == null)
+            {
+                status = CrowdResponse.Status.STATUS_FAILURE;
+                message = $"{Game1.player.Name}'s {toolName} is already at the highest upgrade level";
+            }
+            else
+            {
+                int level = tool.UpgradeLevel;
+                if (level == max)
+                    status = CrowdResponse.Status.STATUS_FAILURE;
+                else
+                {
+                    int index = Game1.player.Items.IndexOf(tool);
+                    Game1.player.removeItemFromInventory(tool);
+                    Tool add = null;
+
+                    if (toolName == "Axe")
+                        add = new Axe() { UpgradeLevel = level + 1 };
+
+                    if (toolName == "Hoe")
+                        add = new Hoe() { UpgradeLevel = level + 1 };
+
+                    if (toolName == "Pickaxe")
+                        add = new Pickaxe() { UpgradeLevel = level + 1 };
+
+                    if (toolName == "Watering Can")
+                        add = new WateringCan() { UpgradeLevel = level + 1 };
+
+                    Game1.player.addItemToInventory(add, index);
+
+                    UI.ShowInfo($"{req.GetReqViewer()} upgraded {Game1.player.Name}'s {toolName}");
+                }
+            }
+
+            return new CrowdResponse(req.GetReqID(), status, message);
         }
 
         private static CrowdResponse DoDowngrade(CrowdRequest req, string toolName)
@@ -980,7 +1094,25 @@ namespace ControlValley
                     status = CrowdResponse.Status.STATUS_FAILURE;
                 else
                 {
-                    tool.UpgradeLevel = level - 1;
+
+                    int index = Game1.player.Items.IndexOf(tool);
+                    Game1.player.removeItemFromInventory(tool);
+                    Tool add = null;
+
+                    if (toolName == "Axe")
+                        add = new Axe() { UpgradeLevel = level + 1 };
+
+                    if (toolName == "Hoe")
+                        add = new Hoe() { UpgradeLevel = level - 1 };
+
+                    if (toolName == "Pickaxe")
+                        add = new Pickaxe() { UpgradeLevel = level - 1 };
+
+                    if (toolName == "Watering Can")
+                        add = new WateringCan() { UpgradeLevel = level - 1 };
+
+                    Game1.player.addItemToInventory(add, index);
+
                     UI.ShowInfo($"{req.GetReqViewer()} downgraded {Game1.player.Name}'s {toolName}");
                 }
             }
@@ -1012,7 +1144,7 @@ namespace ControlValley
             return new CrowdResponse(req.GetReqID(), status, message);
         }
 
-        private static CrowdResponse DoGiveBuff(CrowdRequest req, int buff, int duration, string name)
+        private static CrowdResponse DoGiveBuff(CrowdRequest req, string buff, int duration, string name)
         {
             new Thread(new BuffThread(req.GetReqID(), buff, duration * 1000).Run).Start();
             UI.ShowInfo($"{req.GetReqViewer()} gave {Game1.player.Name} the {name} effect for {duration} seconds");
@@ -1179,89 +1311,66 @@ namespace ControlValley
             return new CrowdResponse(req.GetReqID(), status, message);
         }
 
-        private static CrowdResponse DoUpgrade(CrowdRequest req, string toolName, int max = 4)
-        {
-            CrowdResponse.Status status = CrowdResponse.Status.STATUS_SUCCESS;
-            string message = "";
-
-            Tool tool = Game1.player.getToolFromName(toolName);
-            if (tool == null)
-            {
-                status = CrowdResponse.Status.STATUS_FAILURE;
-                message = $"{Game1.player.Name}'s {toolName} is already at the highest upgrade level";
-            }
-            else
-            {
-                int level = tool.UpgradeLevel;
-                if (level == max)
-                    status = CrowdResponse.Status.STATUS_FAILURE;
-                else
-                {
-                    tool.UpgradeLevel = level + 1;
-                    UI.ShowInfo($"{req.GetReqViewer()} upgraded {Game1.player.Name}'s {toolName}");
-                }
-            }
-
-            return new CrowdResponse(req.GetReqID(), status, message);
-        }
 
         public static CrowdResponse GiveSword(ControlClient client, CrowdRequest req)
         {
             bool found = false;
 
-            if (Game1.player.hasItemInInventoryNamed("Rusty Sword")) found = true;
-            if (Game1.player.hasItemInInventoryNamed("Steel Smallsword")) found = true;
-            if (Game1.player.hasItemInInventoryNamed("Wooden Blade")) found = true;
-            if (Game1.player.hasItemInInventoryNamed("Pirate's Sword")) found = true;
-            if (Game1.player.hasItemInInventoryNamed("Silver Saber")) found = true;
-            if (Game1.player.hasItemInInventoryNamed("Cutlass")) found = true;
-            if (Game1.player.hasItemInInventoryNamed("Forest Sword")) found = true;
-            if (Game1.player.hasItemInInventoryNamed("Iron Edge")) found = true;
+            
+
+            if (Game1.player.Items.Any(item => item?.Name == "Rusty Sword")) found = true;
+            if (Game1.player.Items.Any(item => item?.Name == "Steel Smallsword")) found = true;
+            if (Game1.player.Items.Any(item => item?.Name == "Wooden Blade")) found = true;
+            if (Game1.player.Items.Any(item => item?.Name == "Pirate's Sword")) found = true;
+            if (Game1.player.Items.Any(item => item?.Name == "Silver Saber")) found = true;
+            if (Game1.player.Items.Any(item => item?.Name == "Cutlass")) found = true;
+            if (Game1.player.Items.Any(item => item?.Name == "Forest Sword")) found = true;
+            if (Game1.player.Items.Any(item => item?.Name == "Iron Edge")) found = true;
 
             if(found)
                 return new CrowdResponse(req.id, CrowdResponse.Status.STATUS_FAILURE, "Already have sword");
 
-            return GiveItem(req, new MeleeWeapon(0));
+            return GiveItem(req, new MeleeWeapon("0"));
         }
 
         public static CrowdResponse GiveCookie(ControlClient client, CrowdRequest req)
         {
-            return GiveItem(req, 223);
+            return GiveItem(req, "223");
         }
 
         public static CrowdResponse GiveSuperMeal(ControlClient client, CrowdRequest req)
         {
-            return GiveItem(req, 237);
+            return GiveItem(req, "237");
         }
 
         public static CrowdResponse GiveDiamond(ControlClient client, CrowdRequest req)
         {
-            return GiveItem(req, 72);
+            return GiveItem(req, "72");
         }
 
         public static CrowdResponse GiveCopperBar(ControlClient client, CrowdRequest req)
         {
-            return GiveItem(req, 334);
+            return GiveItem(req, "334");
         }
 
         public static CrowdResponse GiveIronBar(ControlClient client, CrowdRequest req)
         {
-            return GiveItem(req, 335);
+            return GiveItem(req, "335");
         }
 
         public static CrowdResponse GiveGoldBar(ControlClient client, CrowdRequest req)
         {
-            return GiveItem(req, 336);
+            return GiveItem(req, "336");
         }
 
         public static CrowdResponse GiveWood(ControlClient client, CrowdRequest req)
         {
-            return GiveItem(req, 388, 5);
+            return GiveItem(req, "388", 5);
         }
 
         public static CrowdResponse GiveStone(ControlClient client, CrowdRequest req)
         {
-            return GiveItem(req, 390, 5);
+            return GiveItem(req, "390", 5);
         }
 
         public static CrowdResponse SantaMSG(ControlClient client, CrowdRequest req)
@@ -1310,10 +1419,11 @@ namespace ControlValley
             return new CrowdResponse(req.GetReqID(), status, message);
         }
 
-        private static CrowdResponse GiveItem(CrowdRequest req, int item, int qty = 1)
+        private static CrowdResponse GiveItem(CrowdRequest req, string item, int qty = 1)
         {
             CrowdResponse.Status status = CrowdResponse.Status.STATUS_SUCCESS;
             string message = "";
+
 
             Game1.player.addItemByMenuIfNecessary(new StardewValley.Object(item,qty));
 

@@ -84,7 +84,7 @@ namespace ControlValley
             }
         }    
         
-        public BuffThread(int id, int buff, int duration)
+        public BuffThread(int id, string buff, int duration)
         {
             this.buff = new Buff(buff);
             this.duration = duration;
@@ -108,8 +108,11 @@ namespace ControlValley
         public void Run()
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+
+            buff.millisecondsDuration = Buff.ENDLESS;
+            buff.totalMillisecondsDuration = Buff.ENDLESS;
             
-            buff.addBuff();
+            Game1.player.applyBuff(buff);
 
             try
             {
@@ -118,10 +121,11 @@ namespace ControlValley
                 {
                     Interlocked.Add(ref duration, -time);
                     Thread.Sleep(time);
-
                     time = Volatile.Read(ref duration);
                 }
-                buff.removeBuff();
+
+                Game1.player.buffs.Remove(buff.id);
+
                 lock (threads)
                 {
                     threads.Remove(this);
