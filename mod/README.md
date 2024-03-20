@@ -1,11 +1,12 @@
-﻿# ControlValley 1.2.5
+﻿# ControlValley 1.2.6
 
 Stardew Valley Support for Twitch Crowd Control<br>
-Copyright (C) 2021 TerribleTable<br>
+Copyright (C) 2024 dtothefourth / TerribleTable<br>
 LGPL v2.1
 
 ## Contributors
 
+- [dtothefourth](https://twitter.com/dtothefourth)
 - [TerribleTable](https://twitter.com/tablesfordays)
 - [BambooleanLogic](https://twitter.com/BambooleanLogic)
 
@@ -18,7 +19,7 @@ LGPL v2.1
 - [X] Upgrade backpack
 - [X] Official Crowd Control adoption
 - [ ] Downgrade backpack
-- [ ] Add/remove items
+- [x] Add/remove items
 - [ ] Multiplayer support
   - [ ] ConcernedApe approval
   - [ ] Ensure nothing breaks in multiplayer
