@@ -53,8 +53,6 @@ namespace ControlValley
 
     public class CrowdDelegates
     {
-        public static BGM player = null;
-
         public static CrowdResponse DowngradeAxe(ControlClient client, CrowdRequest req)
         {
             return DoDowngrade(req, "Axe");
@@ -380,9 +378,7 @@ namespace ControlValley
 
             try
             {
-                if (player != null) player.Dispose();
-                player = new BGM(@"C:\horserace.mp3");
-                player.Play();
+
             }
             catch(Exception e)
             {
@@ -399,12 +395,7 @@ namespace ControlValley
 
             try
             {
-                if (player != null)
-                {
-                    player.Stop();
-                    player.Dispose();
-                    player = null;
-                }
+
             }
             catch (Exception e)
             {
