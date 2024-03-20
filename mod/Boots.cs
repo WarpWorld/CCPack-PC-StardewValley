@@ -30,17 +30,17 @@ namespace ControlValley
     {
         private static readonly List<IBootTier> boots = new List<IBootTier>
         {
-            new MultiBootTier() { 504, 505 },
-            new MultiBootTier() { 506, 507 },
-            new MultiBootTier() { 508, 509, 510, 806 },
-            new MultiBootTier() { 511, 512 },
-            new MultiBootTier() { 513, 855 },
-            new MultiBootTier() { 514, 804, 878 },
-            new SingleBootTier(853),
-            new SingleBootTier(854)
+            new MultiBootTier() { "504", "505" },
+            new MultiBootTier() { "506", "507" },
+            new MultiBootTier() { "508", "509", "510", "806" },
+            new MultiBootTier() { "511", "512" },
+            new MultiBootTier() { "513", "855" },
+            new MultiBootTier() { "514", "804", "878" },
+            new SingleBootTier("853"),
+            new SingleBootTier("854")
         };
 
-        public static StardewBoots GetDowngrade(int index)
+        public static StardewBoots GetDowngrade(string index)
         {
             for (int i = boots.Count - 1; i > 0; --i)
             {
@@ -51,7 +51,7 @@ namespace ControlValley
             return null;
         }
 
-        public static StardewBoots GetUpgrade(int index)
+        public static StardewBoots GetUpgrade(string index)
         {
             for (int i = 0; i < boots.Count - 1; ++i)
             {
@@ -64,11 +64,11 @@ namespace ControlValley
 
         public interface IBootTier
         {
-            bool Contains(int index);
+            bool Contains(string index);
             StardewBoots GetBoots();
         }
 
-        class MultiBootTier : List<int>, IBootTier
+        class MultiBootTier : List<string>, IBootTier
         {
             private Random Random { get; set; }
 
@@ -84,14 +84,14 @@ namespace ControlValley
 
         class SingleBootTier : IBootTier
         {
-            private readonly int index;
+            private readonly string index;
 
-            public SingleBootTier(int index)
+            public SingleBootTier(string index)
             {
                 this.index = index;
             }
 
-            public bool Contains(int index)
+            public bool Contains(string index)
             {
                 return index == this.index;
             }
