@@ -629,12 +629,12 @@ namespace ControlValley
             string message = "";
             //if (!Game1.eventUp && !UsingTool && (!IsLocalPlayer || Game1.activeClickableMenu == null) && !isRidingHorse() && !IsSitting() && !base.IsEmoting && CanMove)
 
-            if (Game1.player.CanEmote() && Game1.player.CanMove)
+            if (Game1.player.CanEmote() && Game1.player.CanMove && !Game1.player.IsBusyDoingSomething() && !Game1.player.usingTool.Value)
             {
                 string code = req.code;
                 int underScore = code.IndexOf("_");
                 string emote = code.Substring(underScore + 1);
-
+                
 
                 //Game1.player.FarmerSprite.PauseForSingleAnimation = false;
                 //Game1.player.faceDirection(1);
@@ -944,6 +944,12 @@ namespace ControlValley
 
         public static CrowdResponse UpgradeWeapon(ControlClient client, CrowdRequest req)
         {
+
+            if (!Game1.player.canMove || Game1.player.IsBusyDoingSomething() || Game1.player.usingTool.Value)
+            {
+                return new CrowdResponse(req.GetReqID(), CrowdResponse.Status.STATUS_RETRY, "Player Busy");
+            }
+
             int id = req.GetReqID();
 
             if (WeaponClass.Club.DoUpgrade() || WeaponClass.Sword.DoUpgrade() || WeaponClass.Dagger.DoUpgrade())
@@ -1026,6 +1032,12 @@ namespace ControlValley
 
         private static CrowdResponse DoUpgrade(CrowdRequest req, string toolName, int max = 4)
         {
+
+            if (!Game1.player.canMove || Game1.player.IsBusyDoingSomething() || Game1.player.usingTool.Value)
+            {
+                return new CrowdResponse(req.GetReqID(), CrowdResponse.Status.STATUS_RETRY, "Player Busy");
+            }
+
             CrowdResponse.Status status = CrowdResponse.Status.STATUS_SUCCESS;
             string message = "";
 
@@ -1069,6 +1081,13 @@ namespace ControlValley
 
         private static CrowdResponse DoDowngrade(CrowdRequest req, string toolName)
         {
+
+            if (!Game1.player.canMove || Game1.player.IsBusyDoingSomething() || Game1.player.usingTool.Value)
+            {
+                return new CrowdResponse(req.GetReqID(), CrowdResponse.Status.STATUS_RETRY, "Player Busy");
+            }
+
+
             CrowdResponse.Status status = CrowdResponse.Status.STATUS_SUCCESS;
             string message = "";
 
@@ -1104,7 +1123,7 @@ namespace ControlValley
 
                     Game1.player.addItemToInventory(add, index);
 
-                    UI.ShowInfo($"{req.GetReqViewer()} downgraded {Game1.player.Name}'s {toolName}");
+                    UI.ShowInfo($"{req.GetReqViewer()} downgraded {Game1.player.Name}'s {toolName}!!");
                 }
             }
 
@@ -1538,7 +1557,7 @@ namespace ControlValley
             CrowdResponse.Status status = CrowdResponse.Status.STATUS_SUCCESS;
             string message = "";
 
-            if(!Game1.player.canMove || Game1.player.usingTool)
+            if(!Game1.player.canMove || Game1.player.IsBusyDoingSomething() || Game1.player.usingTool.Value)
             {
                 return new CrowdResponse(req.GetReqID(), CrowdResponse.Status.STATUS_RETRY, "Player Busy");
             }
