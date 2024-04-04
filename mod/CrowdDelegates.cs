@@ -63,6 +63,8 @@ namespace ControlValley
             CrowdResponse.Status status = CrowdResponse.Status.STATUS_SUCCESS;
             string message = "";
 
+            Game1.player.
+
             StardewBoots boots = Game1.player.boots.Get();
             if (boots == null)
             {
@@ -143,7 +145,7 @@ namespace ControlValley
             int id = req.GetReqID();
 
             Tool tool;
-            
+
             tool = Game1.player.getToolFromName("Bamboo Pole");
             if (tool == null) tool = Game1.player.getToolFromName("Fiberglass Rod");
             if (tool == null) tool = Game1.player.getToolFromName("Training Rod");
@@ -176,7 +178,7 @@ namespace ControlValley
                     if (level == 0) level = 2;
                     else if (level == 2) level = 1;
 
-                    add = new FishingRod( level - 1);
+                    add = new FishingRod(level - 1);
 
                     Game1.player.addItemToInventory(add, index);
 
@@ -266,7 +268,7 @@ namespace ControlValley
                 status = CrowdResponse.Status.STATUS_FAILURE;
                 message = Game1.player.Name + " is already at maximum energy";
             }
-            
+
             return new CrowdResponse(req.GetReqID(), status, message);
         }
 
@@ -380,7 +382,7 @@ namespace ControlValley
             {
 
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 UI.ShowInfo(e.ToString());
             }
@@ -424,7 +426,7 @@ namespace ControlValley
                     var field = typeof(Farmer).GetField("maxStamina", BindingFlags.Instance | BindingFlags.Public);
                     field.SetValue(Game1.player, new Netcode.NetInt(stamina));
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     UI.ShowError(e.ToString());
                 }
@@ -537,18 +539,18 @@ namespace ControlValley
         {
             CrowdResponse.Status status = CrowdResponse.Status.STATUS_SUCCESS;
             string message = "";
-           
 
-                if (Game1.player.isMarriedOrRoommates() && !Game1.player.divorceTonight.Value && !(Game1.currentLocation is FarmHouse))
+
+            if (Game1.player.isMarriedOrRoommates() && !Game1.player.divorceTonight.Value && !(Game1.currentLocation is FarmHouse))
             {
 
                 int money = Game1.player.Money;
                 if (money > 2)
                 {
-                    money = money/2;
+                    money = money / 2;
                     Game1.player.Money = (money < 0) ? 0 : money;
                 }
-                
+
                 Game1.player.doDivorce();
                 UI.ShowInfo($"{req.GetReqViewer()} caused {Game1.player.Name} to get a divorce.");
             }
@@ -560,7 +562,7 @@ namespace ControlValley
 
 
             return new CrowdResponse(req.GetReqID(), status, message);
-            
+
         }
 
 
@@ -604,7 +606,8 @@ namespace ControlValley
             {
                 Game1.player.changeIntoSwimsuit();
                 UI.ShowInfo($"{req.GetReqViewer()} forced you to wear swimwear!");
-            } else if (swimwear == "off" && Game1.player.bathingClothes.Value)
+            }
+            else if (swimwear == "off" && Game1.player.bathingClothes.Value)
             {
                 Game1.player.changeOutOfSwimSuit();
                 UI.ShowInfo($"{req.GetReqViewer()} has returned your clothes to you.");
@@ -634,7 +637,7 @@ namespace ControlValley
                 string code = req.code;
                 int underScore = code.IndexOf("_");
                 string emote = code.Substring(underScore + 1);
-                
+
 
                 //Game1.player.FarmerSprite.PauseForSingleAnimation = false;
                 //Game1.player.faceDirection(1);
@@ -645,11 +648,13 @@ namespace ControlValley
                 //}.ToArray());
 
                 //Game1.player.changeHat(1);
-                
+
 
                 Game1.player.performPlayerEmote(emote);
                 UI.ShowInfo($"{req.GetReqViewer()} forced {Game1.player.Name} to emote {emote}!");
-            } else {
+            }
+            else
+            {
                 status = CrowdResponse.Status.STATUS_FAILURE;
                 message = Game1.player.Name + " currently cannot emote/move.";
             }
@@ -689,7 +694,7 @@ namespace ControlValley
                 if (Game1.player.Stamina > stamina)
                     Game1.player.Stamina = stamina;
                 UI.ShowInfo($"{req.GetReqViewer()} removed a Stardrop from {Game1.player.Name}");
-                
+
             }
 
             return new CrowdResponse(req.GetReqID(), status, message);
@@ -727,11 +732,11 @@ namespace ControlValley
 
             //this will attempt to prevent monsters from spawning on tiles they shouldnt
             //it wont make it impossible, just more unlikely in theory
- 
+
 
             return isWalkable;
 
-           
+
         }
 
 
@@ -752,7 +757,8 @@ namespace ControlValley
                 if (spawnClose)
                 {
                     monsters.Add(createMonster(GetRandomClose()));
-                } else
+                }
+                else
                 {
                     monsters.Add(createMonster(GetRandomNear()));
                 }
@@ -763,7 +769,7 @@ namespace ControlValley
 
         public static CrowdResponse SpawnBat(ControlClient client, CrowdRequest req)
         {
-            return SpawnMonsters(client, req, location => new Bat(location, 20),false);
+            return SpawnMonsters(client, req, location => new Bat(location, 20), false);
         }
 
         public static CrowdResponse SpawnBlueSquid(ControlClient client, CrowdRequest req)
@@ -771,7 +777,7 @@ namespace ControlValley
             return SpawnMonsters(client, req, location => new BlueSquid(location), false);
         }
 
-    
+
         public static CrowdResponse SpawnSkeleton(ControlClient client, CrowdRequest req)
         {
             return SpawnMonsters(client, req, location => new Skeleton(location, true), false);
@@ -1014,7 +1020,7 @@ namespace ControlValley
 
         public static CrowdResponse WarpWoods(ControlClient client, CrowdRequest req)
         {
-            var forest = (StardewValley.Locations.Forest) Game1.getLocationFromName("Forest");
+            var forest = (StardewValley.Locations.Forest)Game1.getLocationFromName("Forest");
 
             //forest.obsolete_log;
 
@@ -1149,7 +1155,7 @@ namespace ControlValley
                 message = Game1.player.Name + " is already at maximum energy";
             }
 
-               
+
 
             return new CrowdResponse(req.GetReqID(), status, message);
         }
@@ -1222,7 +1228,7 @@ namespace ControlValley
                 status = CrowdResponse.Status.STATUS_FAILURE;
                 message = Game1.player.Name + " currently has no money";
             }
-            
+
             return new CrowdResponse(req.GetReqID(), status, message);
         }
 
@@ -1263,7 +1269,7 @@ namespace ControlValley
 
                 }
 
-                
+
             }
             else
             {
@@ -1282,10 +1288,10 @@ namespace ControlValley
             if (client.CanSpawn())
             {
                 var sprite = new TemporaryAnimatedSprite(286, 100f, 1, 24, loc, true, false, Game1.player.currentLocation, Game1.player)
-                                    {
-                                        extraInfoForEndBehavior = 286,
-                                        endFunction = new TemporaryAnimatedSprite.endBehavior(Game1.player.currentLocation.removeTemporarySpritesWithID)
-                                    };
+                {
+                    extraInfoForEndBehavior = 286,
+                    endFunction = new TemporaryAnimatedSprite.endBehavior(Game1.player.currentLocation.removeTemporarySpritesWithID)
+                };
 
                 Game1.player.currentLocation.temporarySprites.Add(sprite);
 
@@ -1326,7 +1332,7 @@ namespace ControlValley
         {
             bool found = false;
 
-            
+
 
             if (Game1.player.Items.Any(item => item?.Name == "Rusty Sword")) found = true;
             if (Game1.player.Items.Any(item => item?.Name == "Steel Smallsword")) found = true;
@@ -1337,7 +1343,7 @@ namespace ControlValley
             if (Game1.player.Items.Any(item => item?.Name == "Forest Sword")) found = true;
             if (Game1.player.Items.Any(item => item?.Name == "Iron Edge")) found = true;
 
-            if(found)
+            if (found)
                 return new CrowdResponse(req.id, CrowdResponse.Status.STATUS_FAILURE, "Already have sword");
 
             return GiveItem(req, new MeleeWeapon("0"));
@@ -1435,7 +1441,7 @@ namespace ControlValley
             string message = "";
 
 
-            Game1.player.addItemByMenuIfNecessary(new StardewValley.Object(item,qty));
+            Game1.player.addItemByMenuIfNecessary(new StardewValley.Object(item, qty));
 
             return new CrowdResponse(req.GetReqID(), status, message);
         }
@@ -1445,7 +1451,7 @@ namespace ControlValley
             CrowdResponse.Status status = CrowdResponse.Status.STATUS_SUCCESS;
             string message = "";
 
-            if (Game1.activeClickableMenu!=null)
+            if (Game1.activeClickableMenu != null)
             {
                 return new CrowdResponse(req.GetReqID(), CrowdResponse.Status.STATUS_RETRY, "menu open");
             }
@@ -1532,7 +1538,7 @@ namespace ControlValley
             CrowdResponse.Status status = CrowdResponse.Status.STATUS_SUCCESS;
             string message = "";
 
-            Game1.player.changeHairStyle(new Random().Next(1,73));
+            Game1.player.changeHairStyle(new Random().Next(1, 73));
 
             UI.ShowInfo($"{req.GetReqViewer()} changed {Game1.player.Name}'s hair style.");
 
@@ -1557,7 +1563,7 @@ namespace ControlValley
             CrowdResponse.Status status = CrowdResponse.Status.STATUS_SUCCESS;
             string message = "";
 
-            if(!Game1.player.canMove || Game1.player.IsBusyDoingSomething() || Game1.player.usingTool.Value)
+            if (!Game1.player.canMove || Game1.player.IsBusyDoingSomething() || Game1.player.usingTool.Value)
             {
                 return new CrowdResponse(req.GetReqID(), CrowdResponse.Status.STATUS_RETRY, "Player Busy");
             }
@@ -1584,9 +1590,9 @@ namespace ControlValley
                 name = "Island";
             UI.ShowInfo($"{req.GetReqViewer()} warped {Game1.player.Name} to the {name}");
 
-            
 
-            return new CrowdResponse(req.GetReqID(),status, message);
+
+            return new CrowdResponse(req.GetReqID(), status, message);
         }
 
         private static readonly float MAX_RADIUS = 400;
