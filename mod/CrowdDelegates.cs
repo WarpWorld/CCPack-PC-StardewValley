@@ -91,85 +91,6 @@ namespace ControlValley
         }
 
 
-
-        public static CrowdResponse UpgradeFishingRod_OLD_WORKING(ControlClient client, CrowdRequest req)
-        {
-
-            int id = req.GetReqID();
-            if (!Game1.player.canMove || Game1.player.IsBusyDoingSomething() || Game1.player.usingTool.Value) return new CrowdResponse(id, CrowdResponse.Status.STATUS_RETRY, "Player Busy");
-
-            CrowdResponse.Status status = CrowdResponse.Status.STATUS_SUCCESS;
-            string message = "";
-
-            Dictionary<string, int> fishingRods = new Dictionary<string, int>
-            {
-                {"Advanced Iridium Rod", 4},
-                {"Iridium Rod", 3},
-                {"Fiberglass Rod", 2},
-                {"Training Rod", 1},
-                {"Bamboo Pole", 0},
-                {"Fishing Rod", -1}
-            };
-
-            int dictionarySize = fishingRods.Keys.ToList().Count;
-            Tool existingTool = null;
-            int inventoryPosition = -1;
-            int itemLevel = -1;
-            string newItemName = "";
-
-            foreach (var rod in fishingRods.OrderByDescending(rl => rl.Value))
-            {
-                if (Game1.player.Items.Any(item => item?.Name == rod.Key))
-                {
-                    existingTool = Game1.player.getToolFromName(rod.Key);
-                    inventoryPosition = Game1.player.Items.IndexOf(Game1.player.getToolFromName(rod.Key));
-
-                    if (rod.Key == "Fishing Rod")
-                    {
-                        string realItemName = fishingRods.FirstOrDefault(x => x.Value == 2).Key;
-                        int downgradeItemIndex = fishingRods.Keys.ToList().IndexOf(realItemName) - 1;
-                        newItemName = fishingRods.Keys.ToList()[downgradeItemIndex];
-                        if (downgradeItemIndex <= dictionarySize && downgradeItemIndex >= 0)
-                        {
-                            itemLevel = fishingRods.Values.ToList()[downgradeItemIndex];
-                        }
-                    }
-                    else
-                    {
-
-                        int downgradeItemIndex = fishingRods.Keys.ToList().IndexOf(rod.Key) - 1;
-                        if (downgradeItemIndex <= dictionarySize && downgradeItemIndex >= 0)
-                        {
-                            newItemName = fishingRods.Keys.ToList()[downgradeItemIndex];
-                            itemLevel = fishingRods.Values.ToList()[downgradeItemIndex];
-                        }
-                    }
-                    break;
-                }
-            }
-
-
-            if (inventoryPosition == -1 || existingTool == null || itemLevel == -1)
-            {
-                // No fishing rod in inventory, unable to upgrade
-                status = CrowdResponse.Status.STATUS_FAILURE;
-                message = $"{Game1.player.Name}'s fishing rod is already at the highest level";
-                return new CrowdResponse(req.GetReqID(), status, message);
-            }
-
-            Game1.player.removeItemFromInventory(existingTool);
-            Tool newItem = new FishingRod(itemLevel);
-            newItem.Name = newItemName;
-
-            Game1.player.addItemToInventory(newItem, inventoryPosition);
-            UI.ShowInfo($"{req.GetReqViewer()} upgraded {Game1.player.Name}'s fishing rod");
-
-            return new CrowdResponse(req.GetReqID(), status, message);
-        }
-
-
-
-
         public static CrowdResponse UpdateEquipment(ControlClient client, CrowdRequest req, string action, string equipment, string defaultItemName)
         {
 
@@ -307,7 +228,6 @@ namespace ControlValley
                 case "wateringCans":
                     newItem = new WateringCan() { Name = newItemName, UpgradeLevel = itemLevel };
                     break;
-                    // Add more cases as needed
             }
 
             if (newItem != null)
@@ -323,82 +243,6 @@ namespace ControlValley
                 return new CrowdResponse(req.GetReqID(), status, message);
             }
         }
-
-        public static CrowdResponse DowngradeFishingRodOLD_WORKING(ControlClient client, CrowdRequest req)
-        {
-
-            int id = req.GetReqID();
-            if (!Game1.player.canMove || Game1.player.IsBusyDoingSomething() || Game1.player.usingTool.Value) return new CrowdResponse(id, CrowdResponse.Status.STATUS_RETRY, "Player Busy");
-
-            CrowdResponse.Status status = CrowdResponse.Status.STATUS_SUCCESS;
-            string message = "";
-
-            Dictionary<string, int> fishingRods = new Dictionary<string, int>
-            {
-                {"Advanced Iridium Rod", 4},
-                {"Iridium Rod", 3},
-                {"Fiberglass Rod", 2},
-                {"Training Rod", 1},
-                {"Bamboo Pole", 0},
-                {"Fishing Rod", -1}
-            };
-
-            int dictionarySize = fishingRods.Keys.ToList().Count;
-            Tool existingTool = null;
-            int inventoryPosition = -1;
-            int itemLevel = -1;
-            string newItemName = "";
-
-            foreach (var rod in fishingRods.OrderByDescending(rl => rl.Value))
-            {
-                if (Game1.player.Items.Any(item => item?.Name == rod.Key))
-                {
-                    existingTool = Game1.player.getToolFromName(rod.Key);
-                    inventoryPosition = Game1.player.Items.IndexOf(Game1.player.getToolFromName(rod.Key));
-
-                    if (rod.Key == "Fishing Rod")
-                    {
-                        string realItemName = fishingRods.FirstOrDefault(x => x.Value == 2).Key;
-                        int downgradeItemIndex = fishingRods.Keys.ToList().IndexOf(realItemName) + 1;
-                        newItemName = fishingRods.Keys.ToList()[downgradeItemIndex];
-                        if (downgradeItemIndex <= dictionarySize && downgradeItemIndex >= 0)
-                        {
-                            itemLevel = fishingRods.Values.ToList()[downgradeItemIndex];
-                        }
-                    }
-                    else
-                    {
-
-                        int downgradeItemIndex = fishingRods.Keys.ToList().IndexOf(rod.Key) + 1;
-                        if (downgradeItemIndex <= dictionarySize && downgradeItemIndex >= 0)
-                        {
-                            newItemName = fishingRods.Keys.ToList()[downgradeItemIndex];
-                            itemLevel = fishingRods.Values.ToList()[downgradeItemIndex];
-                        }
-                    }
-                    break;
-                }
-            }
-
-
-            if (inventoryPosition == -1 || existingTool == null || itemLevel == -1)
-            {
-                // No fishing rod in inventory, unable to upgrade
-                status = CrowdResponse.Status.STATUS_FAILURE;
-                message = $"{Game1.player.Name}'s fishing rod is already at the lowest level";
-                return new CrowdResponse(req.GetReqID(), status, message);
-            }
-
-            Game1.player.removeItemFromInventory(existingTool);
-            Tool newItem = new FishingRod(itemLevel);
-            newItem.Name = newItemName;
-
-            Game1.player.addItemToInventory(newItem, inventoryPosition);
-            UI.ShowInfo($"{req.GetReqViewer()} downgraded {Game1.player.Name}'s fishing rod");
-
-            return new CrowdResponse(req.GetReqID(), status, message);
-        }
-
 
         public static CrowdResponse DowngradeHoe(ControlClient client, CrowdRequest req)
         {
@@ -1099,7 +943,6 @@ namespace ControlValley
 
         public static CrowdResponse UpgradeAxe(ControlClient client, CrowdRequest req)
         {
-            //return DoUpgrade(req, "Axe");
             return UpdateEquipment(client, req, "upgraded", "axes", "Axe");
         }
 
