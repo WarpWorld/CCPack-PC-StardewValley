@@ -178,7 +178,7 @@ namespace ControlValley
                     // If the Key matches the default item name, we will get it's current level and use that instead of the full item name
                     // This is mainly for "Fishing Rod" as it can be added as just "Fishing Rod" in some instances
                     // But could also happen for others?
-                    if (item.Key == defaultItemName)
+                    if (item.Key == defaultItemName && equipment == "fishingRods")
                     {
                         string realItemName = itemList.FirstOrDefault(x => x.Value == 2).Key;
                         int updatedItemIndex = itemList.Keys.ToList().IndexOf(realItemName) + direction;
