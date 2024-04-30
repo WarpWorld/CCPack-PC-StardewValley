@@ -210,7 +210,7 @@ namespace ControlValley
 
         private void ClientLoop()
         {
-            UI.ShowInfo("Connected to Crowd Control");
+            UI.ShowInfo("Connected to Crowd Control v1.3");
 
             var timer = new Timer(timeUpdate, null, 0, 200);
 
