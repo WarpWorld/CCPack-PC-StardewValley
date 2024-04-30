@@ -246,7 +246,7 @@ namespace ControlValley
 
         public static CrowdResponse DowngradeHoe(ControlClient client, CrowdRequest req)
         {
-            return UpdateEquipment(client, req, "upgraded", "hoes", "Hoe");
+            return UpdateEquipment(client, req, "downgraded", "hoes", "Hoe");
         }
 
         public static CrowdResponse DowngradePickaxe(ControlClient client, CrowdRequest req)
