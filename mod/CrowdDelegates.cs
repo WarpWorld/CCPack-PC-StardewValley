@@ -140,6 +140,7 @@ namespace ControlValley
                 {"Watering Can", 0},
             };
 
+
             int id = req.GetReqID();
             if (!Game1.player.canMove || Game1.player.IsBusyDoingSomething() || Game1.player.usingTool.Value) return new CrowdResponse(id, CrowdResponse.Status.STATUS_RETRY, "Player Busy");
 
@@ -168,6 +169,7 @@ namespace ControlValley
                     existingTool = Game1.player.getToolFromName(item.Key);
                     inventoryPosition = Game1.player.Items.IndexOf(Game1.player.getToolFromName(item.Key));
 
+
                     // If the existing tool is already at the lowest upgrade level, we can't downgrade it
                     if (existingTool.UpgradeLevel == 0 && direction == 1)
                     {
@@ -194,8 +196,17 @@ namespace ControlValley
                         int updatedItemIndex = itemList.Keys.ToList().IndexOf(item.Key) + direction;
                         if (updatedItemIndex <= dictionarySize && updatedItemIndex >= 0)
                         {
-                            newItemName = itemList.Keys.ToList()[updatedItemIndex];
-                            itemLevel = itemList.Values.ToList()[updatedItemIndex];
+                            try
+                            {
+                                newItemName = itemList.Keys.ToList()[updatedItemIndex];
+                            } catch (Exception ex)
+                            {
+                                //for some reason unknown to us and the spirits sometimes getting the item name from the list
+                                //will cause a crash, we don't really need to set a name but it's nice
+                                newItemName = "";
+                            }
+                            if (action == "downgraded" ) itemLevel = existingTool.UpgradeLevel - 1;
+                            if (action == "upgraded" ) itemLevel = existingTool.UpgradeLevel + 1;
                         }
                     }
                     break;
