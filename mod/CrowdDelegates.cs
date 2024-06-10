@@ -568,6 +568,9 @@ namespace ControlValley
             CrowdResponse.Status status = CrowdResponse.Status.STATUS_SUCCESS;
             string message = "";
 
+            if (Game1.isFestival()) return new CrowdResponse(req.GetReqID(), CrowdResponse.Status.STATUS_FAILURE, "Player is at the festival");
+
+
             if (Interlocked.Exchange(ref Game1.player.health, 0) == 0)
             {
                 status = CrowdResponse.Status.STATUS_FAILURE;
@@ -821,6 +824,9 @@ namespace ControlValley
 
         public static CrowdResponse SpawnMonsters(ControlClient client, CrowdRequest req, Func<Vector2, Monster> createMonster, bool spawnClose)
         {
+
+            if (Game1.isFestival()) return new CrowdResponse(req.GetReqID(), CrowdResponse.Status.STATUS_FAILURE, "Player is at the festival");
+
             int quantity = 1;
 
             if (req.parameters != null && req.parameters.Length > 0)
@@ -1658,10 +1664,14 @@ namespace ControlValley
             CrowdResponse.Status status = CrowdResponse.Status.STATUS_SUCCESS;
             string message = "";
 
+            if (Game1.isFestival()) return new CrowdResponse(req.GetReqID(), CrowdResponse.Status.STATUS_FAILURE, "Player is at the festival");
+
             if (!Game1.player.canMove || Game1.player.IsBusyDoingSomething() || Game1.player.usingTool.Value)
             {
                 return new CrowdResponse(req.GetReqID(), CrowdResponse.Status.STATUS_RETRY, "Player Busy");
             }
+
+            
 
             try
             {
