@@ -1,4 +1,5 @@
-﻿using CrowdControl.Common;
+﻿using ConnectorLib.JSON;
+using CrowdControl.Common;
 using ConnectorType = CrowdControl.Common.ConnectorType;
 
 namespace CrowdControl.Games.Packs.StardewValley;
