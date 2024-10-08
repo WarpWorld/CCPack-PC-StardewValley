@@ -1,10 +1,10 @@
-﻿using ConnectorLib.JSON;
+﻿using ConnectorLib.SimpleTCP;
 using CrowdControl.Common;
 using ConnectorType = CrowdControl.Common.ConnectorType;
 
 namespace CrowdControl.Games.Packs.StardewValley;
 
-public class StardewValley : SimpleTCPPack
+public class StardewValley : SimpleTCPPack<SimpleTCPServerConnector>
 {
     public override string Host => "127.0.0.1";
 
