@@ -16,7 +16,7 @@ public class StardewValley : SimpleTCPPack<SimpleTCPServerConnector>
 
     public override Game Game { get; } = new("Stardew Valley", "StardewValley", "PC", ConnectorType.SimpleTCPServerConnector);
 
-    public override EffectList Effects => new List<Effect>
+    public override EffectList Effects { get; } = new List<Effect>
     {
 
             new("Play Horse Race", "horserace"),
