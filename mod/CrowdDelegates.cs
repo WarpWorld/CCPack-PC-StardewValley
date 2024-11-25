@@ -27,22 +27,10 @@ using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Monsters;
 using StardewBoots = StardewValley.Objects.Boots;
-using StardewChest = StardewValley.Objects.Chest;
 using StardewValley.Tools;
 using StardewValley.Menus;
-using System.Security.Cryptography.Pkcs;
-using System.ComponentModel.Design;
-using System.Xml.Linq;
-using Microsoft.Xna.Framework.Graphics;
-using Newtonsoft.Json.Linq;
-using xTile.Dimensions;
 using xTile.Tiles;
-using xTile;
 using xTile.ObjectModel;
-using static StardewValley.Farmer;
-using StardewValley.Characters;
-using static StardewValley.Menus.CharacterCustomization;
-using System.Data.SqlTypes;
 using StardewValley.Locations;
 using System.Linq;
 using System.Reflection;
@@ -1754,5 +1742,16 @@ namespace ControlValley
         }
 
 
+        public static CrowdResponse HypeTrain(ControlClient client, CrowdRequest req)
+        {
+            CrowdResponse.Status status = CrowdResponse.Status.STATUS_SUCCESS;
+            string message = "";
+
+            Game1.player.changeHairStyle(new Random().Next(1, 73));
+
+            UI.ShowInfo($"{req.GetReqViewer()} changed {Game1.player.Name}'s hair style.");
+
+            return new CrowdResponse(req.GetReqID(), status, message);
+        }
     }
 }
