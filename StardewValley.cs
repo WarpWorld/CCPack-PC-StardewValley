@@ -173,6 +173,8 @@ public class StardewValley : SimpleTCPPack<SimpleTCPServerConnector>
             new("Pizza Delivery", "msg_pizza"){ Category = "Send Message", Price = 50, Description = "Send a special message to the player!"},
             new("Fertilizer Ad", "msg_grow"){ Category = "Send Message", Price = 25, Description = "Send a special message to the player!"},
             new("Lottery", "msg_lottery"){ Category = "Send Message", Price = 25, Description = "Send a special message to the player!"},
-            new("Tech Support", "msg_tech"){ Category = "Send Message", Price = 25, Description = "Send a special message to the player!"}
+            new("Tech Support", "msg_tech"){ Category = "Send Message", Price = 25, Description = "Send a special message to the player!"},
+            
+            new("Hype Train", "event-hype-train")
     };
 }

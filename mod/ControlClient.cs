@@ -25,7 +25,10 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 using System.Threading;
+using ConnectorLib.JSON;
+using Newtonsoft.Json;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Monsters;
@@ -349,6 +352,18 @@ namespace ControlValley
                 }
             }
         }
+
+        public bool Respond(EffectRequest request, EffectStatus status, string? message = null)
+            => Send(new EffectResponse(request.ID, status, 0, message));
+
+        public bool Respond(EffectRequest request, EffectStatus status, long timeRemaining, string? message = null)
+            => Send(new EffectResponse(request.ID, status, timeRemaining, message));
+
+        public bool Send(SimpleJSONResponse response)
+            => Socket.Send(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(this) + "\0")) > 0;
+
+        public bool Send(CrowdResponse response)
+            => Socket.Send(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(this) + "\0")) > 0;
 
         public void Stop()
         {

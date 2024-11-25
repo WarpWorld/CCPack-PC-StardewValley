@@ -20,16 +20,24 @@
  * USA
  */
 
+using System.Collections.Generic;
 using System.Globalization;
 using System.Threading;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewValley;
 
 namespace ControlValley
 {
     public class ModEntry : Mod
     {
-        private ControlClient client = null;
+        public static ModEntry Instance { get; private set; }
+
+        public ControlClient? Client { get; private set; }
+
+        public HashSet<Behavior> Behaviors { get; } = new();
+
+        public ModEntry() => Instance = this;
 
         public override void Entry(IModHelper helper)
         {
@@ -37,7 +45,7 @@ namespace ControlValley
             
             if (Context.IsMultiplayer)
             {
-                this.Monitor.Log("Crowd Control is unavailable in multiplayer. Skipping mod.", LogLevel.Info);
+                Monitor.Log("Crowd Control is unavailable in multiplayer. Skipping mod.", LogLevel.Info);
                 return;
             }
 
@@ -45,29 +53,45 @@ namespace ControlValley
             helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
         }
 
+        private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
+        {
+            foreach (Behavior behavior in Behaviors)
+                behavior.Update(Game1.currentGameTime);
+        }
+
+        private void OnRendered(object sender, RenderedEventArgs e)
+        {
+            foreach (Behavior behavior in Behaviors)
+                behavior.Draw(Game1.currentGameTime, e.SpriteBatch);
+        }
+
         private void OnReturnedToTitle(object sender, ReturnedToTitleEventArgs e)
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             
-            if (client == null) return;
-            Helper.Events.GameLoop.Saved -= client.OnSaved;
-            Helper.Events.GameLoop.Saving -= client.OnSaving;
-            Helper.Events.Player.Warped -= client.OnWarped;
-            client.Stop();
-            client = null;
+            if (Client == null) return;
+            Helper.Events.GameLoop.Saved -= Client.OnSaved;
+            Helper.Events.GameLoop.Saving -= Client.OnSaving;
+            Helper.Events.Player.Warped -= Client.OnWarped;
+            Helper.Events.GameLoop.UpdateTicked -= OnUpdateTicked;
+            Helper.Events.Display.Rendered -= OnRendered;
+            Client.Stop();
+            Client = null;
         }
 
         private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             
-            if (!Context.IsWorldReady || client != null) return;
-            client = new ControlClient();
-            Helper.Events.GameLoop.Saved += client.OnSaved;
-            Helper.Events.GameLoop.Saving += client.OnSaving;
-            Helper.Events.Player.Warped += client.OnWarped;
-            new Thread(new ThreadStart(client.NetworkLoop)).Start();
-            new Thread(new ThreadStart(client.RequestLoop)).Start();
+            if (!Context.IsWorldReady || Client != null) return;
+            Client = new ControlClient();
+            Helper.Events.GameLoop.Saved += Client.OnSaved;
+            Helper.Events.GameLoop.Saving += Client.OnSaving;
+            Helper.Events.Player.Warped += Client.OnWarped;
+            Helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
+            Helper.Events.Display.Rendered += OnRendered;
+            new Thread(Client.NetworkLoop).Start();
+            new Thread(Client.RequestLoop).Start();
         }
     }
 }
