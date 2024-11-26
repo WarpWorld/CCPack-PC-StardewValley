@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using ConnectorLib.JSON;
-using CrowdControl;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 

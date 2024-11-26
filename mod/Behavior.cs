@@ -36,10 +36,7 @@ public abstract class Behavior(ModEntry mod) : IEquatable<Behavior>
         if (!ContentLoaded) LoadContent();
     }
 
-    public virtual bool TryStop()
-    {
-        return Mod.Behaviors.Remove(this);
-    }
+    public virtual bool TryStop() => Mod.ActiveBehaviors.TryRemove(ID, out _);
 
     public virtual void Update(GameTime gameTime) { }
     public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch) { }
