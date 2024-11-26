@@ -1,14 +1,13 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using ControlValley;
+using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 
-namespace CrowdControl;
+namespace ControlValley;
 
 internal static class Extensions
 {
