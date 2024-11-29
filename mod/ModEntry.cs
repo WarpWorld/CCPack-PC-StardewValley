@@ -75,6 +75,7 @@ namespace ControlValley
 
         private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e)
         {
+            TimedThread.Tick();
             foreach (Behavior behavior in ActiveBehaviors.Values)
                 behavior.Update(Game1.currentGameTime);
         }

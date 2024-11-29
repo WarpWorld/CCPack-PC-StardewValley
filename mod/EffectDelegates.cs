@@ -37,6 +37,7 @@ using System.Reflection;
 using ConnectorLib.JSON;
 using ControlValley.Effects;
 using StardewValley.TerrainFeatures;
+using System.Xml.Linq;
 
 namespace ControlValley
 {
@@ -1149,7 +1150,11 @@ namespace ControlValley
 
         private static void DoGiveBuff(ControlClient client, EffectRequest req, string buff, SITimeSpan duration, string name)
         {
-            TimedThread.Enqueue(req, new TimedBuff(buff), duration);
+            if (!TimedThread.TryEnqueue(req, new TimedBuff(buff), duration))
+            {
+                client.Respond(req, EffectStatus.Retry, $"The {name} buff is already active.");
+                return;
+            }
             UI.ShowInfo($"{req.viewer} gave {Game1.player.Name} the {name} effect for {duration} seconds");
             client.Respond(req, EffectStatus.Success, duration);
         }
@@ -1592,14 +1597,14 @@ namespace ControlValley
 
         public static void HypeTrain(ControlClient client,  EffectRequest req)
         {
-            EffectStatus status = EffectStatus.Success;
-            string message = "";
+            if (!ModEntry.Instance.TrySetActive(req, typeof(EffectHypeTrain), out _))
+            {
+                client.Respond(req, EffectStatus.Failure, "Hype train already in progress.");
+                return;
+            }
 
-            ModEntry.Instance.TrySetActive(null, typeof(EffectHypeTrain), out _);
-
-            UI.ShowInfo("Choo! Choo!");
-
-            client.Respond(req, status, message);
+            UI.ShowInfo("A hype train is here! Choo! Choo!");
+            client.Respond(req, EffectStatus.Success);
         }
     }
 }
