@@ -22,10 +22,21 @@ public sealed class TimedThread
     public SITimeSpan TimeRemaining { get; private set; }
     public bool Paused { get; private set; }
 
-    public static void Enqueue(EffectRequest request, TimedEvent effect, SITimeSpan? duration = null)
+    public static bool TryEnqueue<T>(EffectRequest request, T effect, SITimeSpan? duration = null)
+        where T : TimedEvent
     {
-        try { m_threads.TryAdd(request.ID, new(request, effect, duration)); }
-        catch (Exception e) { ModEntry.Instance.Monitor.Log(e.ToString(), LogLevel.Error); }
+        try
+        {
+            if (IsRunning<T>()) return false;
+            bool result = m_threads.TryAdd(request.ID, new(request, effect, duration));
+            if (result) effect.Start();
+            return result;
+        }
+        catch (Exception e)
+        {
+            ModEntry.Instance.Monitor.Log(e.ToString(), LogLevel.Error);
+            return false;
+        }
     }
 
     private TimedThread(EffectRequest request, TimedEvent effect, SITimeSpan? duration = null)
@@ -113,7 +124,6 @@ public sealed class TimedThread
         Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
         Effect.Start();
-
         try
         {
             await Task.Delay((int)TimeRemaining);
