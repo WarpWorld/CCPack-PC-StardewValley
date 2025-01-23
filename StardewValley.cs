@@ -18,7 +18,6 @@ public class StardewValley : SimpleTCPPack<SimpleTCPServerConnector>
 
     public override EffectList Effects { get; } = new List<Effect>
     {
-
             new("Play Horse Race", "horserace"),
             new("Stop Horse Race", "horseraceend"),
 
@@ -30,8 +29,7 @@ public class StardewValley : SimpleTCPPack<SimpleTCPServerConnector>
             new("Trash Can", "downgrade_trashcan"){ Category = "Downgrade Items"},
             new("Watering Can", "downgrade_wateringcan"){ Category = "Downgrade Items"},
             new("Weapon", "downgrade_weapon"){ Category = "Downgrade Items"},
-
-
+            
             new("Axe", "upgrade_axe"){ Category = "Upgrade Items"},
             //new Effect("Backpack", "upgrade_backpack"){ Category = "Upgrade Items"},
             new("Boots", "upgrade_boots"){ Category = "Upgrade Items"},
@@ -127,8 +125,7 @@ public class StardewValley : SimpleTCPPack<SimpleTCPServerConnector>
             new("Remove Children", "removechildren"){ Category = "Heartbreak", Price = 100000, Description = "Force the player's children to turn to doves or something."},
             new("Force Swimware", "swimware_on"){ Price = 500, Description = "Force the player to wear their swimware."},
             new("Remove Swimware", "swimware_off"){ Price = 200, Description = "Removes the players swimware."},
-
-
+            
             new("Bomb", "spawn_bomb") { Category = "Spawn Creature"},
 
                 new("Brown", "hair_brown"){ Category = "Hair Color", Price = 15, Description = "Swap the player's hair color to brown!"},

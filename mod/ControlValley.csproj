@@ -29,22 +29,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ModFiles Include="ccver" />
-    <ModFiles Include="Newtonsoft.Json.dll" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="ConnectorLib.JSON">
       <HintPath>ConnectorLib.JSON.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>$(GamePath)\smapi-internal\Newtonsoft.Json.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
-      <Private>False</Private>
     </Reference>
   </ItemGroup>
 
