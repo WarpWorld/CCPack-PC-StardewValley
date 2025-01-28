@@ -13,7 +13,7 @@ internal static class Extensions
 {
     public static Assembly CrowdControlAssembly { get; } = Assembly.GetExecutingAssembly();
 
-    private static readonly string m_resourcePath = "";
+    private static readonly string m_resourcePath = "ControlValley.Content.";
 
     public static Texture2D LoadEmbeddedTexture(this GraphicsDevice graphicsDevice, string resourcePath)
     {

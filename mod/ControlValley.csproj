@@ -41,6 +41,9 @@
     <Reference Include="ConnectorLib.JSON">
       <HintPath>ConnectorLib.JSON.dll</HintPath>
     </Reference>
+    <Reference Include="CrowdControl.Extensions">
+      <HintPath>CrowdControl.Extensions.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>

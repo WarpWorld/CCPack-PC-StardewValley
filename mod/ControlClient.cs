@@ -2,6 +2,7 @@
  * ControlValley
  * Stardew Valley Support for Twitch Crowd Control
  * Copyright (C) 2021 TerribleTable
+ * Copyright (C) 2021-2024 Warp World, Inc. (dtothefourth, jaku, KatDevsGames)
  * LGPL v2.1
  * 
  * This library is free software; you can redistribute it and/or
@@ -347,6 +348,8 @@ namespace ControlValley
             Spawn = Array.IndexOf(_no_spawn, args.NewLocation.Name.ToLower()) < 0;
         }
 
+        private const int LOOP_YIELD_DELAY = 200;//ms
+        
         public void RequestLoop()
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
@@ -355,7 +358,7 @@ namespace ControlValley
                 try
                 {
                     while (Saving || Game1.isTimePaused)
-                        Thread.Yield();
+                        Thread.Sleep(LOOP_YIELD_DELAY);
 
                     SimpleJSONRequest req;
                     lock (Requests)
@@ -367,7 +370,6 @@ namespace ControlValley
 
                     try
                     {
-
                         switch (req)
                         {
                             case DataRequest dataRequest:
@@ -414,7 +416,7 @@ namespace ControlValley
             => Send(new EffectResponse(request.ID, status, timeRemaining, message));
 
         public bool Send(SimpleJSONResponse response)
-            => Socket.Send(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(this) + "\0")) > 0;
+            => Socket.Send(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(response) + "\0")) > 0;
 
         public void Start()
         {
