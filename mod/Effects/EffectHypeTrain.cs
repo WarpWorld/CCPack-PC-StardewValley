@@ -7,31 +7,32 @@ using Microsoft.Xna.Framework.Graphics;
 namespace ControlValley.Effects;
 
 // ReSharper disable once UnusedMember.Global
-public class EffectHypeTrain(ModEntry mod) : Behavior(mod)
+public class EffectHypeTrain : Behavior
 {
     private Vector2 m_trainPosition;
     private Vector2 m_trainVelocity;
     private float m_trainDirection;
 
     private readonly Dictionary<string, HypeTrainSourceDetails.Contribution> m_contributions = new();
-
+    
     private static Texture2D? m_texTrainFront;
     private static Texture2D? m_texTrainBox;
     private static Texture2D? m_texTrainCoal;
     private static Texture2D? m_texTrainTank;
 
+    public EffectHypeTrain(ModEntry mod) : base(mod) => TryGetTrainTextures(Game.GraphicsDevice);
+    
     private void TryGetTrainTextures(GraphicsDevice graphicsDevice)
     {
-        m_texTrainFront ??= graphicsDevice.LoadEmbeddedTexture("Content\\HypeTrain\\front2_64.png");
-        m_texTrainBox ??= graphicsDevice.LoadEmbeddedTexture("Content\\HypeTrain\\box_64.png");
-        m_texTrainCoal ??= graphicsDevice.LoadEmbeddedTexture("Content\\HypeTrain\\coal_64.png");
-        m_texTrainTank ??= graphicsDevice.LoadEmbeddedTexture("Content\\HypeTrain\\tank_64.png");
+        m_texTrainFront ??= graphicsDevice.LoadEmbeddedTexture("HypeTrain\\front2_64.png");
+        m_texTrainBox ??= graphicsDevice.LoadEmbeddedTexture("HypeTrain\\box_64.png");
+        m_texTrainCoal ??= graphicsDevice.LoadEmbeddedTexture("HypeTrain\\coal_64.png");
+        m_texTrainTank ??= graphicsDevice.LoadEmbeddedTexture("HypeTrain\\tank_64.png");
     }
 
     public override void LoadContent()
     {
         base.LoadContent();
-        TryGetTrainTextures(Game.GraphicsDevice);
     }
 
     public override void Start(EffectRequest request)

@@ -2,6 +2,7 @@
  * ControlValley
  * Stardew Valley Support for Twitch Crowd Control
  * Copyright (C) 2021 TerribleTable
+ * Copyright (C) 2021-2024 Warp World, Inc. (dtothefourth, jaku, KatDevsGames)
  * LGPL v2.1
  * 
  * This library is free software; you can redistribute it and/or
@@ -26,9 +27,11 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Threading;
 using ConnectorLib.JSON;
+using CrowdControl.Common;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using LogLevel = StardewModdingAPI.LogLevel;
 
 namespace ControlValley
 {
@@ -45,6 +48,7 @@ namespace ControlValley
         public ModEntry()
         {
             Instance = this;
+            //ConsoleEx.AllocConsole();
 
             foreach (Type type in typeof(Behavior).Assembly.GetTypes())
                 if (type.IsSubclassOf(typeof(Behavior)))
