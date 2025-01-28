@@ -79,22 +79,25 @@ public class EffectHypeTrain : Behavior
             //TryStop();
     }
 
+    private const float TRAIN_SCALE = 2f;
+    
     public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
     {
         base.Draw(gameTime, spriteBatch);
         if (!Active || (Player == null)) return;
 
-        if (m_texTrainFront == null) return;
+        Texture2D? tex = m_texTrainFront;
+        if (tex == null) return;
+        
         SpriteEffects effects = (m_trainDirection > 0) ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
         
-        Texture2D tex = m_texTrainFront;
-        spriteBatch.Draw(m_texTrainFront, new Rectangle((int)m_trainPosition.X, (int)m_trainPosition.Y, m_texTrainFront.Width, m_texTrainFront.Height), null, Color.White, 0f, Vector2.Zero, effects, 1f);
+        spriteBatch.Draw(tex, new Vector2(m_trainPosition.X, m_trainPosition.Y), null, Color.White, 0f, Vector2.Zero, TRAIN_SCALE, effects, 1f);
         
-        float nextOffsetX = m_trainPosition.X + ((m_trainDirection < 0) ? m_texTrainFront.Width : 0f);
+        float nextOffsetX = m_trainPosition.X + ((m_trainDirection < 0) ? (tex.Width * TRAIN_SCALE) : 0f);
         foreach (var contribution in m_contributions)
         {
             tex = (string.Equals(contribution.Value.Type, "bits") ? m_texTrainCoal : m_texTrainBox)!;
-            nextOffsetX += tex.Width * -m_trainDirection;
+            nextOffsetX += (tex.Width * TRAIN_SCALE) * -m_trainDirection;
             float nextOffsetY;
             if (tex == m_texTrainCoal)
                 nextOffsetY = -4f;
@@ -105,13 +108,13 @@ public class EffectHypeTrain : Behavior
             else
                 nextOffsetY = 0f;
 
-            spriteBatch.Draw(tex, new Rectangle((int)nextOffsetX, (int)(m_trainPosition.Y + nextOffsetY), tex.Width, tex.Height), null, Color.White, 0f, Vector2.Zero, effects, 1f);
+            spriteBatch.Draw(tex, new Vector2(nextOffsetX, (m_trainPosition.Y + nextOffsetY)), null, Color.White, 0f, Vector2.Zero, TRAIN_SCALE, effects, 1f);
             
             string carText = contribution.Value.UserName;
             Vector2 halfText = SmallFont.MeasureString(carText) / 2f;
             spriteBatch.DrawString(SmallFont,
                 carText,
-                new Vector2(nextOffsetX + ((tex.Width * m_trainDirection) / 2f) - halfText.X, m_trainPosition.Y + nextOffsetY + (tex.Height / 2f) - halfText.Y),
+                new Vector2(nextOffsetX + (((tex.Width * TRAIN_SCALE) * m_trainDirection) / 2f) - halfText.X, m_trainPosition.Y + nextOffsetY + ((tex.Height * TRAIN_SCALE) / 2f) - halfText.Y),
                 Color.White,
                 0f,
                 Vector2.Zero,
@@ -123,7 +126,7 @@ public class EffectHypeTrain : Behavior
 
         if ((m_trainVelocity.X > 0) && (nextOffsetX > ViewportBounds.Value.Right))
             TryStop();
-        else if ((m_trainVelocity.X < 0) && ((nextOffsetX + tex.Width) < ViewportBounds.Value.Left))
+        else if ((m_trainVelocity.X < 0) && ((nextOffsetX + (tex.Width * TRAIN_SCALE)) < ViewportBounds.Value.Left))
             TryStop();
     }
 }
