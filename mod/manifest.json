@@ -1,0 +1,10 @@
+﻿{
+  "Name": "CrowdControl",
+  "Author": "CrowdControl",
+  "Version": "1.5.1",
+  "Description": "Crowd Control is a mod that allows your livestream viewers on any platform to interact with your game using tips, bits, channel points, charitable donations, and more. This is a fork of ControlValley by TheTexanTesla.",
+  "UniqueID": "CrowdControl.CrowdControl",
+  "EntryDll": "CrowdControl.dll",
+  "MinimumApiVersion": "4.1.10",
+  "UpdateKeys": []
+}
