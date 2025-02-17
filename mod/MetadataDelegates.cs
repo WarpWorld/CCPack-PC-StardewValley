@@ -1,6 +1,6 @@
 ﻿using ConnectorLib.JSON;
 
-namespace ControlValley;
+namespace CrowdControl;
 
 public delegate DataResponse MetadataDelegate(ControlClient client);
 

@@ -1,5 +1,5 @@
 ﻿/*
- * ControlValley
+ * CrowdControl
  * Stardew Valley Support for Twitch Crowd Control
  * Copyright (C) 2021 TerribleTable
  * Copyright (C) 2021-2024 Warp World, Inc. (dtothefourth, jaku, KatDevsGames)
@@ -26,7 +26,7 @@ using System.Collections.Generic;
 using StardewValley;
 using StardewValley.Tools;
 
-namespace ControlValley
+namespace CrowdControl
 {
     public class WeaponClass : List<IWeaponTier>
     {

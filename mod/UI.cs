@@ -1,6 +1,6 @@
 ﻿using StardewValley;
 
-namespace ControlValley
+namespace CrowdControl
 {
     public class UI
     {

@@ -4,7 +4,7 @@ using ConnectorLib.JSON;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace ControlValley.Effects;
+namespace CrowdControl.Effects;
 
 // ReSharper disable once UnusedMember.Global
 public class EffectHypeTrain : Behavior

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using ConnectorLib.JSON;
 using StardewModdingAPI;
 
-namespace ControlValley;
+namespace CrowdControl;
 
 public sealed class TimedThread
 {

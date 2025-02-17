@@ -1,5 +1,5 @@
 ﻿/*
- * ControlValley
+ * CrowdControl
  * Stardew Valley Support for Twitch Crowd Control
  * Copyright (C) 2021 TerribleTable
  * LGPL v2.1
@@ -24,7 +24,7 @@ using System;
 using System.Collections.Generic;
 using StardewBoots = StardewValley.Objects.Boots;
 
-namespace ControlValley
+namespace CrowdControl
 {
     public class Boots
     {

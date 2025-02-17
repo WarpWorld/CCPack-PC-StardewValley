@@ -1,4 +1,4 @@
-﻿# ControlValley 1.2.6
+﻿# CrowdControl 1.2.6
 
 Stardew Valley Support for Twitch Crowd Control<br>
 Copyright (C) 2024 dtothefourth / TerribleTable<br>
@@ -28,8 +28,8 @@ LGPL v2.1
 ## Installation and Use
 
 - Download and install [SMAPI 3.9.2](https://smapi.io)
-- Download [`ControlValley.zip`](https://github.com/tesla1889tv/ControlValleyMod/releases/latest/download/ControlValley.zip)
-- Extract `ControlValley.zip` into your SMAPI Mods folder
+- Download [`CrowdControl.zip`](https://github.com/tesla1889tv/CrowdControlMod/releases/latest/download/CrowdControl.zip)
+- Extract `CrowdControl.zip` into your SMAPI Mods folder
 - Start “Stardew Valley (PC)” from the Crowd Control desktop app
 - Start Stardew Valley using `StardewModdingAPI.exe` in your install folder
 - ???
