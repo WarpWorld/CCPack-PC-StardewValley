@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFrameworks>net6.0</TargetFrameworks>
+    <RootNamespace>CrowdControl</RootNamespace>
+    <AssemblyName>CrowdControl</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>latest</LangVersion>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ModFiles Include="ccver" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="ConnectorLib.JSON">
+      <HintPath>ConnectorLib.JSON.dll</HintPath>
+    </Reference>
+    <Reference Include="CrowdControl.Extensions">
+      <HintPath>CrowdControl.Extensions.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Content\HypeTrain\box_64.png" />
+    <EmbeddedResource Include="Content\HypeTrain\coal_64.png" />
+    <EmbeddedResource Include="Content\HypeTrain\front2_64.png" />
+    <EmbeddedResource Include="Content\HypeTrain\tank_64.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Effects\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="ccver">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
