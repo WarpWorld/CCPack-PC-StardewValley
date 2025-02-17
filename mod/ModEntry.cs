@@ -1,5 +1,5 @@
 ﻿/*
- * ControlValley
+ * CrowdControl
  * Stardew Valley Support for Twitch Crowd Control
  * Copyright (C) 2021 TerribleTable
  * Copyright (C) 2021-2024 Warp World, Inc. (dtothefourth, jaku, KatDevsGames)
@@ -33,7 +33,7 @@ using StardewModdingAPI.Events;
 using StardewValley;
 using LogLevel = StardewModdingAPI.LogLevel;
 
-namespace ControlValley
+namespace CrowdControl
 {
     public class ModEntry : Mod
     {

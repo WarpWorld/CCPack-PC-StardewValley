@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 
-namespace ControlValley;
+namespace CrowdControl;
 
 public abstract class Behavior(ModEntry mod) : IEquatable<Behavior>
 {

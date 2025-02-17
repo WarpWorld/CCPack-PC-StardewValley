@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 
-namespace ControlValley;
+namespace CrowdControl;
 
 internal static class Extensions
 {
     public static Assembly CrowdControlAssembly { get; } = Assembly.GetExecutingAssembly();
 
-    private static readonly string m_resourcePath = "ControlValley.Content.";
+    private static readonly string m_resourcePath = "CrowdControl.Content.";
 
     public static Texture2D LoadEmbeddedTexture(this GraphicsDevice graphicsDevice, string resourcePath)
     {

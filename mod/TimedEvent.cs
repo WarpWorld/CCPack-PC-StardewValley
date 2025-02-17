@@ -1,4 +1,4 @@
-﻿namespace ControlValley;
+﻿namespace CrowdControl;
 
 public abstract class TimedEvent
 {

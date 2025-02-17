@@ -1,5 +1,5 @@
 ﻿/*
- * ControlValley
+ * CrowdControl
  * Stardew Valley Support for Twitch Crowd Control
  * Copyright (C) 2021 TerribleTable
  * LGPL v2.1
@@ -35,11 +35,11 @@ using StardewValley.Locations;
 using System.Linq;
 using System.Reflection;
 using ConnectorLib.JSON;
-using ControlValley.Effects;
+using CrowdControl.Effects;
 using StardewValley.TerrainFeatures;
 using System.Xml.Linq;
 
-namespace ControlValley
+namespace CrowdControl
 {
     public delegate void EffectDelegate(ControlClient client,  EffectRequest req);
 
