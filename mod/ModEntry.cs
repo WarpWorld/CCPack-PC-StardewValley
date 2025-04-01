@@ -79,7 +79,7 @@ namespace CrowdControl
 
         private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e)
         {
-            TimedThread.Tick();
+            TimedThread.Tick(Game1.currentGameTime);
             foreach (Behavior behavior in ActiveBehaviors.Values)
                 behavior.Update(Game1.currentGameTime);
         }
