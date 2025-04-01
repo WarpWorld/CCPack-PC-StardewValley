@@ -324,92 +324,34 @@ namespace CrowdControl
             client.Respond(req, status, message);
         }
 
-        public static void GiveBuffAdrenaline(ControlClient client, EffectRequest req)
-        {
-            float dur = 30;
-            if (req.duration > 0) dur = req.duration.Value / 1000f;
-
-            DoGiveBuff(client, req, Buff.adrenalineRush, dur, "Adrenaline Rush");
-        }
+        public static void GiveBuffAdrenaline(ControlClient client, EffectRequest req) => DoGiveBuff(client, req, Buff.adrenalineRush, "Adrenaline Rush");
 
         public static void GiveBuffDarkness(ControlClient client, EffectRequest req)
         {
-            float dur = 30;
-            if (req.duration > 0) dur = req.duration.Value / 1000f;
-
             if (Game1.IsRainingHere())
             {
                 client.Respond(req, EffectStatus.Retry, "Raining");
                 return;
             }
 
-            DoGiveBuff(client, req, Buff.darkness, dur, "Darkness");
+            DoGiveBuff(client, req, Buff.darkness, "Darkness");
         }
 
-        public static void GiveMonsterMuskBuff(ControlClient client, EffectRequest req)
-        {
-            float dur = 30;
-            if (req.duration > 0) dur = req.duration.Value / 1000f;
+        public static void GiveMonsterMuskBuff(ControlClient client, EffectRequest req) => DoGiveBuff(client, req, Buff.spawnMonsters, "Monster Musk Buff");
 
-            DoGiveBuff(client, req, Buff.spawnMonsters, dur, "Monster Musk Buff");
-        }
+        public static void GiveBuffFrozen(ControlClient client, EffectRequest req) => DoGiveBuff(client, req, Buff.frozen, "Frozen");
 
+        public static void GiveBuffInvincibility(ControlClient client, EffectRequest req) => DoGiveBuff(client, req, Buff.yobaBlessing, "Invincibility");
 
-        public static void GiveBuffFrozen(ControlClient client, EffectRequest req)
-        {
-            float dur = 10;
-            if (req.duration > 0) dur = req.duration.Value / 1000f;
+        public static void GiveBuffNauseous(ControlClient client, EffectRequest req) => DoGiveBuff(client, req, Buff.nauseous, "Nauseous");
 
-            DoGiveBuff(client, req, Buff.frozen, dur, "Frozen");
-        }
+        public static void GiveBuffSlime(ControlClient client, EffectRequest req) => DoGiveBuff(client, req, Buff.slimed, "Slimed");
 
-        public static void GiveBuffInvincibility(ControlClient client, EffectRequest req)
-        {
-            float dur = 30;
-            if (req.duration > 0) dur = req.duration.Value / 1000f;
+        public static void GiveBuffSpeed(ControlClient client, EffectRequest req) => DoGiveBuff(client, req, Buff.speed.ToString(), "Speed Buff");
 
-            DoGiveBuff(client, req, Buff.yobaBlessing, dur, "Invincibility");
-        }
+        public static void GiveBuffTipsy(ControlClient client, EffectRequest req) => DoGiveBuff(client, req, Buff.tipsy, "Tipsy");
 
-        public static void GiveBuffNauseous(ControlClient client, EffectRequest req)
-        {
-            float dur = 60;
-            if (req.duration > 0) dur = req.duration.Value / 1000f;
-
-            DoGiveBuff(client, req, Buff.nauseous, dur, "Nauseous");
-        }
-
-        public static void GiveBuffSlime(ControlClient client, EffectRequest req)
-        {
-            float dur = 10;
-            if (req.duration > 0) dur = req.duration.Value / 1000f;
-
-            DoGiveBuff(client, req, Buff.slimed, dur, "Slimed");
-        }
-
-        public static void GiveBuffSpeed(ControlClient client, EffectRequest req)
-        {
-            float dur = 120;
-            if (req.duration > 0) dur = req.duration.Value / 1000f;
-
-            DoGiveBuff(client, req, Buff.speed.ToString(), dur, "Speed Buff");
-        }
-
-        public static void GiveBuffTipsy(ControlClient client, EffectRequest req)
-        {
-            float dur = 120;
-            if (req.duration > 0) dur = req.duration.Value / 1000f;
-
-            DoGiveBuff(client, req, Buff.tipsy, dur, "Tipsy");
-        }
-
-        public static void GiveBuffWarrior(ControlClient client, EffectRequest req)
-        {
-            float dur = 30;
-            if (req.duration > 0) dur = req.duration.Value / 1000f;
-
-            DoGiveBuff(client, req, Buff.warriorEnergy, dur, "Warrior Energy");
-        }
+        public static void GiveBuffWarrior(ControlClient client, EffectRequest req) => DoGiveBuff(client, req, Buff.warriorEnergy, "Warrior Energy");
 
         public static void GiveMoney100(ControlClient client, EffectRequest req)
             => DoGiveMoney(client, req, 100);
@@ -1153,9 +1095,10 @@ namespace CrowdControl
             client.Respond(req, status, message);
         }
 
-        private static void DoGiveBuff(ControlClient client, EffectRequest req, string buff, SITimeSpan duration, string name)
+        private static void DoGiveBuff(ControlClient client, EffectRequest req, string buff, string name)
         {
-            if (!TimedThread.TryEnqueue(req, new TimedBuff(buff), duration))
+            SITimeSpan duration = SITimeSpan.FromMilliseconds(req.duration ?? 15000);
+            if (!TimedThread.TryEnqueue(req, new TimedBuff(buff, duration), duration))
             {
                 client.Respond(req, EffectStatus.Retry, $"The {name} buff is already active.");
                 return;

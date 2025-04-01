@@ -23,7 +23,7 @@ public sealed class TimedThread
     public SITimeSpan TimeRemaining { get; private set; }
     public bool Paused { get; private set; }
 
-    public static bool TryEnqueue<T>(EffectRequest request, T effect, SITimeSpan? duration = null)
+    public static bool TryEnqueue<T>(EffectRequest request, T effect, SITimeSpan duration)
         where T : TimedEvent
     {
         try
@@ -40,12 +40,12 @@ public sealed class TimedThread
         }
     }
 
-    private TimedThread(EffectRequest request, TimedEvent effect, SITimeSpan? duration = null)
+    private TimedThread(EffectRequest request, TimedEvent effect, SITimeSpan duration)
     {
         Request = request;
         Effect = effect;
-        Duration = duration ?? SITimeSpan.FromMilliseconds(request.duration ?? 0);
-        TimeRemaining = Duration;
+        Duration = duration;
+        TimeRemaining = duration;
         Paused = false;
     }
 
@@ -61,14 +61,13 @@ public sealed class TimedThread
     {
         foreach (TimedThread thread in m_threads.Values)
         {
-            if (!thread.Paused)
-            {
-                thread.TimeRemaining -= gameTime.ElapsedGameTime;
-                if (thread.TimeRemaining > 0)
-                    thread.Effect.Tick();
-                else
-                    thread.Stop();
-            }
+            if (thread.Paused) continue;
+            thread.TimeRemaining -= gameTime.ElapsedGameTime;
+            //ModEntry.Instance.Monitor.Log($"Time remaining: {thread.TimeRemaining.TotalSeconds}s", LogLevel.Error);
+            if (thread.TimeRemaining > 0)
+                thread.Effect.Tick();
+            else
+                thread.Stop();
         }
     }
 
