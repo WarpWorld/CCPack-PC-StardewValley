@@ -42,7 +42,7 @@ namespace CrowdControl
         public static readonly string CV_HOST = "127.0.0.1";
         public static readonly int CV_PORT = 51337;
 
-        private static readonly string[] _no_spawn = { "hospital", "islandsouth" };
+        private static readonly string[] _no_spawn = ["hospital", "islandsouth"];
 
         private Dictionary<string, EffectDelegate> EffectDelegates { get; }
         private Dictionary<string, MetadataDelegate> MetadataDelegates { get; }
@@ -227,7 +227,7 @@ namespace CrowdControl
         private void ClientLoop()
         {
             ModEntry.Instance.Monitor.Log("Connected to Crowd Control");
-
+            UI.ShowInfo("Connected to Crowd Control");
             try
             {
                 while (Running)
@@ -246,6 +246,7 @@ namespace CrowdControl
             catch (Exception)
             {
                 ModEntry.Instance.Monitor.Log("Disconnected from Crowd Control");
+                UI.ShowInfo("Disconnected from Crowd Control");
                 Socket?.Close();
             }
         }

@@ -41,11 +41,11 @@ using System.Xml.Linq;
 
 namespace CrowdControl
 {
-    public delegate void EffectDelegate(ControlClient client,  EffectRequest req);
+    public delegate void EffectDelegate(ControlClient client, EffectRequest req);
 
     public class EffectDelegates
     {
-        public static void DowngradeAxe(ControlClient client,  EffectRequest req)
+        public static void DowngradeAxe(ControlClient client, EffectRequest req)
             => UpdateEquipment(client, req, "downgraded", "axes", "Axe");
 
         public static void DowngradeBoots(ControlClient client, EffectRequest req)
@@ -240,13 +240,13 @@ namespace CrowdControl
             }
         }
 
-        public static void DowngradeHoe(ControlClient client,  EffectRequest req)
+        public static void DowngradeHoe(ControlClient client, EffectRequest req)
             => UpdateEquipment(client, req, "downgraded", "hoes", "Hoe");
 
-        public static void DowngradePickaxe(ControlClient client,  EffectRequest req)
+        public static void DowngradePickaxe(ControlClient client, EffectRequest req)
             => UpdateEquipment(client, req, "downgraded", "pickaxes", "Pickaxe");
 
-        public static void DowngradeTrashCan(ControlClient client,  EffectRequest req)
+        public static void DowngradeTrashCan(ControlClient client, EffectRequest req)
         {
 
             if (!Game1.player.canMove || Game1.player.IsBusyDoingSomething() || Game1.player.usingTool.Value)
@@ -272,10 +272,10 @@ namespace CrowdControl
             client.Respond(req, status, message);
         }
 
-        public static void DowngradeWateringCan(ControlClient client,  EffectRequest req)
+        public static void DowngradeWateringCan(ControlClient client, EffectRequest req)
             => UpdateEquipment(client, req, "downgraded", "wateringCans", "Watering Can");
 
-        public static void DowngradeWeapon(ControlClient client,  EffectRequest req)
+        public static void DowngradeWeapon(ControlClient client, EffectRequest req)
         {
 
             if (!Game1.player.canMove || Game1.player.IsBusyDoingSomething() || Game1.player.usingTool.Value)
@@ -294,16 +294,16 @@ namespace CrowdControl
             client.Respond(req, EffectStatus.Failure, Game1.player.Name + "'s Weapon is already at the lowest upgrade level");
         }
 
-        public static void Energize10(ControlClient client,  EffectRequest req)
+        public static void Energize10(ControlClient client, EffectRequest req)
             => DoEnergizeBy(client, req, 0.1f);
 
-        public static void Energize25(ControlClient client,  EffectRequest req)
+        public static void Energize25(ControlClient client, EffectRequest req)
             => DoEnergizeBy(client, req, 0.25f);
 
-        public static void Energize50(ControlClient client,  EffectRequest req)
+        public static void Energize50(ControlClient client, EffectRequest req)
             => DoEnergizeBy(client, req, 0.5f);
 
-        public static void EnergizeFull(ControlClient client,  EffectRequest req)
+        public static void EnergizeFull(ControlClient client, EffectRequest req)
         {
             EffectStatus status = EffectStatus.Success;
             string message = "";
@@ -324,7 +324,7 @@ namespace CrowdControl
             client.Respond(req, status, message);
         }
 
-        public static void GiveBuffAdrenaline(ControlClient client,  EffectRequest req)
+        public static void GiveBuffAdrenaline(ControlClient client, EffectRequest req)
         {
             float dur = 30;
             if (req.duration > 0) dur = req.duration.Value / 1000f;
@@ -332,7 +332,7 @@ namespace CrowdControl
             DoGiveBuff(client, req, Buff.adrenalineRush, dur, "Adrenaline Rush");
         }
 
-        public static void GiveBuffDarkness(ControlClient client,  EffectRequest req)
+        public static void GiveBuffDarkness(ControlClient client, EffectRequest req)
         {
             float dur = 30;
             if (req.duration > 0) dur = req.duration.Value / 1000f;
@@ -346,7 +346,7 @@ namespace CrowdControl
             DoGiveBuff(client, req, Buff.darkness, dur, "Darkness");
         }
 
-        public static void GiveMonsterMuskBuff(ControlClient client,  EffectRequest req)
+        public static void GiveMonsterMuskBuff(ControlClient client, EffectRequest req)
         {
             float dur = 30;
             if (req.duration > 0) dur = req.duration.Value / 1000f;
@@ -355,7 +355,7 @@ namespace CrowdControl
         }
 
 
-        public static void GiveBuffFrozen(ControlClient client,  EffectRequest req)
+        public static void GiveBuffFrozen(ControlClient client, EffectRequest req)
         {
             float dur = 10;
             if (req.duration > 0) dur = req.duration.Value / 1000f;
@@ -363,7 +363,7 @@ namespace CrowdControl
             DoGiveBuff(client, req, Buff.frozen, dur, "Frozen");
         }
 
-        public static void GiveBuffInvincibility(ControlClient client,  EffectRequest req)
+        public static void GiveBuffInvincibility(ControlClient client, EffectRequest req)
         {
             float dur = 30;
             if (req.duration > 0) dur = req.duration.Value / 1000f;
@@ -371,7 +371,7 @@ namespace CrowdControl
             DoGiveBuff(client, req, Buff.yobaBlessing, dur, "Invincibility");
         }
 
-        public static void GiveBuffNauseous(ControlClient client,  EffectRequest req)
+        public static void GiveBuffNauseous(ControlClient client, EffectRequest req)
         {
             float dur = 60;
             if (req.duration > 0) dur = req.duration.Value / 1000f;
@@ -379,7 +379,7 @@ namespace CrowdControl
             DoGiveBuff(client, req, Buff.nauseous, dur, "Nauseous");
         }
 
-        public static void GiveBuffSlime(ControlClient client,  EffectRequest req)
+        public static void GiveBuffSlime(ControlClient client, EffectRequest req)
         {
             float dur = 10;
             if (req.duration > 0) dur = req.duration.Value / 1000f;
@@ -387,7 +387,7 @@ namespace CrowdControl
             DoGiveBuff(client, req, Buff.slimed, dur, "Slimed");
         }
 
-        public static void GiveBuffSpeed(ControlClient client,  EffectRequest req)
+        public static void GiveBuffSpeed(ControlClient client, EffectRequest req)
         {
             float dur = 120;
             if (req.duration > 0) dur = req.duration.Value / 1000f;
@@ -395,7 +395,7 @@ namespace CrowdControl
             DoGiveBuff(client, req, Buff.speed.ToString(), dur, "Speed Buff");
         }
 
-        public static void GiveBuffTipsy(ControlClient client,  EffectRequest req)
+        public static void GiveBuffTipsy(ControlClient client, EffectRequest req)
         {
             float dur = 120;
             if (req.duration > 0) dur = req.duration.Value / 1000f;
@@ -403,7 +403,7 @@ namespace CrowdControl
             DoGiveBuff(client, req, Buff.tipsy, dur, "Tipsy");
         }
 
-        public static void GiveBuffWarrior(ControlClient client,  EffectRequest req)
+        public static void GiveBuffWarrior(ControlClient client, EffectRequest req)
         {
             float dur = 30;
             if (req.duration > 0) dur = req.duration.Value / 1000f;
@@ -411,16 +411,16 @@ namespace CrowdControl
             DoGiveBuff(client, req, Buff.warriorEnergy, dur, "Warrior Energy");
         }
 
-        public static void GiveMoney100(ControlClient client,  EffectRequest req)
+        public static void GiveMoney100(ControlClient client, EffectRequest req)
             => DoGiveMoney(client, req, 100);
 
-        public static void GiveMoney1000(ControlClient client,  EffectRequest req)
+        public static void GiveMoney1000(ControlClient client, EffectRequest req)
             => DoGiveMoney(client, req, 1000);
 
-        public static void GiveMoney10000(ControlClient client,  EffectRequest req)
+        public static void GiveMoney10000(ControlClient client, EffectRequest req)
             => DoGiveMoney(client, req, 10000);
         
-        public static void PlayHorseRace(ControlClient client,  EffectRequest req)
+        public static void PlayHorseRace(ControlClient client, EffectRequest req)
         {
             EffectStatus status = EffectStatus.Success;
             string message = "";
@@ -437,7 +437,7 @@ namespace CrowdControl
             client.Respond(req, status, message);
         }
 
-        public static void StopHorseRace(ControlClient client,  EffectRequest req)
+        public static void StopHorseRace(ControlClient client, EffectRequest req)
         {
             EffectStatus status = EffectStatus.Success;
             string message = "";
@@ -454,7 +454,7 @@ namespace CrowdControl
             client.Respond(req, status, message);
         }
 
-        public static void GiveStardrop(ControlClient client,  EffectRequest req)
+        public static void GiveStardrop(ControlClient client, EffectRequest req)
         {
             EffectStatus status = EffectStatus.Success;
             string message = "";
@@ -485,16 +485,16 @@ namespace CrowdControl
             client.Respond(req, status, message);
         }
 
-        public static void Heal10(ControlClient client,  EffectRequest req)
+        public static void Heal10(ControlClient client, EffectRequest req)
             => DoHealBy(client, req, 0.1f);
 
-        public static void Heal25(ControlClient client,  EffectRequest req)
+        public static void Heal25(ControlClient client, EffectRequest req)
             => DoHealBy(client, req, 0.25f);
 
-        public static void Heal50(ControlClient client,  EffectRequest req)
+        public static void Heal50(ControlClient client, EffectRequest req)
             => DoHealBy(client, req, 0.5f);
 
-        public static void HealFull(ControlClient client,  EffectRequest req)
+        public static void HealFull(ControlClient client, EffectRequest req)
         {
             EffectStatus status = EffectStatus.Success;
             string message = "";
@@ -510,16 +510,16 @@ namespace CrowdControl
             client.Respond(req, status, message);
         }
 
-        public static void Hurt10(ControlClient client,  EffectRequest req)
+        public static void Hurt10(ControlClient client, EffectRequest req)
             => DoHurtBy(client, req, 0.1f);
 
-        public static void Hurt25(ControlClient client,  EffectRequest req)
+        public static void Hurt25(ControlClient client, EffectRequest req)
             => DoHurtBy(client, req, 0.25f);
 
-        public static void Hurt50(ControlClient client,  EffectRequest req)
+        public static void Hurt50(ControlClient client, EffectRequest req)
             => DoHurtBy(client, req, 0.5f);
 
-        public static void Kill(ControlClient client,  EffectRequest req)
+        public static void Kill(ControlClient client, EffectRequest req)
         {
             EffectStatus status = EffectStatus.Success;
             string message = "";
@@ -542,7 +542,7 @@ namespace CrowdControl
             client.Respond(req, status, message);
         }
 
-        public static void PassOut(ControlClient client,  EffectRequest req)
+        public static void PassOut(ControlClient client, EffectRequest req)
         {
             EffectStatus status = EffectStatus.Success;
             string message = "";
@@ -562,16 +562,16 @@ namespace CrowdControl
             client.Respond(req, status, message);
         }
 
-        public static void RemoveMoney100(ControlClient client,  EffectRequest req)
+        public static void RemoveMoney100(ControlClient client, EffectRequest req)
             => DoRemoveMoney(client, req, 100);
 
-        public static void RemoveMoney1000(ControlClient client,  EffectRequest req)
+        public static void RemoveMoney1000(ControlClient client, EffectRequest req)
             => DoRemoveMoney(client, req, 1000);
 
-        public static void RemoveMoney10000(ControlClient client,  EffectRequest req)
+        public static void RemoveMoney10000(ControlClient client, EffectRequest req)
             => DoRemoveMoney(client, req, 10000);
 
-        public static void Divorce(ControlClient client,  EffectRequest req)
+        public static void Divorce(ControlClient client, EffectRequest req)
         {
             EffectStatus status = EffectStatus.Success;
             string message = "";
@@ -601,7 +601,7 @@ namespace CrowdControl
         }
 
 
-        public static void TurnChildrenToDoves(ControlClient client,  EffectRequest req)
+        public static void TurnChildrenToDoves(ControlClient client, EffectRequest req)
         {
             EffectStatus status = EffectStatus.Success;
             string message = "";
@@ -627,7 +627,7 @@ namespace CrowdControl
 
 
 
-        public static void ChangeSwimClothes(ControlClient client,  EffectRequest req)
+        public static void ChangeSwimClothes(ControlClient client, EffectRequest req)
         {
             EffectStatus status = EffectStatus.Success;
             string message = "";
@@ -658,7 +658,7 @@ namespace CrowdControl
         }
 
 
-        public static void PlayerEmote(ControlClient client,  EffectRequest req)
+        public static void PlayerEmote(ControlClient client, EffectRequest req)
         {
 
             EffectStatus status = EffectStatus.Success;
@@ -697,7 +697,7 @@ namespace CrowdControl
         }
 
 
-        public static void RemoveStardrop(ControlClient client,  EffectRequest req)
+        public static void RemoveStardrop(ControlClient client, EffectRequest req)
         {
             EffectStatus status = EffectStatus.Success;
             string message = "";
@@ -774,7 +774,6 @@ namespace CrowdControl
 
         public static void SpawnMonsters(ControlClient client, EffectRequest req, Func<Vector2, Monster> createMonster, bool spawnClose)
         {
-
             if (Game1.isFestival())
             {
                 client.Respond(req, EffectStatus.Failure, "Player is at the festival");
@@ -784,91 +783,97 @@ namespace CrowdControl
             uint quantity = req.quantity ?? 1;
 
             List<Monster> monsters = new List<Monster>();
+            Span<Vector2> locations = stackalloc Vector2[(int)quantity];
 
             for (int i = 0; i < quantity; i++)
             {
-
-                if (spawnClose)
+                if (!TryGetRandomClose(out Vector2 location))
                 {
-                    monsters.Add(createMonster(GetRandomClose()));
+                    client.Respond(req, EffectStatus.Failure, "Not enough valid spawn locations found");
+                    return;
                 }
-                else
-                {
-                    monsters.Add(createMonster(GetRandomNear()));
-                }
+                locations[i] = location;
             }
 
+            for (int i = 0; i < quantity; i++) monsters.Add(createMonster(locations[i]));
             DoSpawn(client, req, monsters);
         }
 
-        public static void SpawnBat(ControlClient client,  EffectRequest req)
+        public static void SpawnBat(ControlClient client, EffectRequest req)
             => SpawnMonsters(client, req, location => new Bat(location, 20), false);
 
-        public static void SpawnBlueSquid(ControlClient client,  EffectRequest req)
+        public static void SpawnBlueSquid(ControlClient client, EffectRequest req)
             => SpawnMonsters(client, req, location => new BlueSquid(location), false);
 
 
-        public static void SpawnSkeleton(ControlClient client,  EffectRequest req)
+        public static void SpawnSkeleton(ControlClient client, EffectRequest req)
             => SpawnMonsters(client, req, location => new Skeleton(location, true), false);
 
-        public static void SpawnSkeletonMage(ControlClient client,  EffectRequest req)
+        public static void SpawnSkeletonMage(ControlClient client, EffectRequest req)
             => SpawnMonsters(client, req, location => new Skeleton(location, true), false);
         
-        public static void SpawnRedSlime(ControlClient client,  EffectRequest req)
+        public static void SpawnRedSlime(ControlClient client, EffectRequest req)
             => SpawnMonsters(client, req, location => new GreenSlime(location, 105), false);
 
-        public static void SpawnGreenSlime(ControlClient client,  EffectRequest req)
+        public static void SpawnGreenSlime(ControlClient client, EffectRequest req)
             => SpawnMonsters(client, req, location => new GreenSlime(location, 2), true);
 
-        public static void SpawnFrostJelly(ControlClient client,  EffectRequest req)
+        public static void SpawnFrostJelly(ControlClient client, EffectRequest req)
             => SpawnMonsters(client, req, location => new GreenSlime(location, 40), true);
 
-        public static void SpawnRedSludge(ControlClient client,  EffectRequest req)
+        public static void SpawnRedSludge(ControlClient client, EffectRequest req)
             => SpawnMonsters(client, req, location => new GreenSlime(location, 85), true);
 
-        public static void SpawnFly(ControlClient client,  EffectRequest req)
+        public static void SpawnFly(ControlClient client, EffectRequest req)
             => SpawnMonsters(client, req, location => new Fly(location), false);
 
-        public static void DowngradeFishingRod(ControlClient client,  EffectRequest req)
+        public static void DowngradeFishingRod(ControlClient client, EffectRequest req)
             => UpdateEquipment(client, req, "downgraded", "fishingRods", "Fishing Rod");
 
-        public static void UpgradeFishingRod(ControlClient client,  EffectRequest req)
+        public static void UpgradeFishingRod(ControlClient client, EffectRequest req)
             => UpdateEquipment(client, req, "upgraded", "fishingRods", "Fishing Rod");
 
-        public static void SpawnBug(ControlClient client,  EffectRequest req)
+        public static void SpawnBug(ControlClient client, EffectRequest req)
             => SpawnMonsters(client, req, location => new Bug(location, 20), false);
 
-        public static void SpawnWildernessGolem(ControlClient client,  EffectRequest req)
+        public static void SpawnWildernessGolem(ControlClient client, EffectRequest req)
             => SpawnMonsters(client, req, location => new RockGolem(location, 35), true);
         
-        public static void SpawnGhost(ControlClient client,  EffectRequest req)
+        public static void SpawnGhost(ControlClient client, EffectRequest req)
             => SpawnMonsters(client, req, location => new Ghost(location), false);
 
-        public static void SpawnLavaBat(ControlClient client,  EffectRequest req)
+        public static void SpawnLavaBat(ControlClient client, EffectRequest req)
             => SpawnMonsters(client, req, location => new Bat(location, 100), false);
 
-        public static void SpawnFrostBat(ControlClient client,  EffectRequest req)
+        public static void SpawnFrostBat(ControlClient client, EffectRequest req)
             => SpawnMonsters(client, req, location => new Bat(location, 60), false);
 
-        public static void SpawnSerpent(ControlClient client,  EffectRequest req)
+        public static void SpawnSerpent(ControlClient client, EffectRequest req)
             => SpawnMonsters(client, req, location => new Serpent(location), false);
 
-        public static void SpawnBomb(ControlClient client,  EffectRequest req)
-            => DoBomb(client, req, GetRandomNear());
+        public static void SpawnBomb(ControlClient client, EffectRequest req)
+        {
+            if (!TryGetRandomClose(out Vector2 location))
+            {
+                client.Respond(req, EffectStatus.Failure, "No valid spawn location found");
+                return;
+            }
+            DoBomb(client, req, location);
+        }
 
-        public static void Tire10(ControlClient client,  EffectRequest req)
+        public static void Tire10(ControlClient client, EffectRequest req)
             => DoTireBy(client, req, 0.1f);
 
-        public static void Tire25(ControlClient client,  EffectRequest req)
+        public static void Tire25(ControlClient client, EffectRequest req)
             => DoTireBy(client, req, 0.25f);
 
-        public static void Tire50(ControlClient client,  EffectRequest req)
+        public static void Tire50(ControlClient client, EffectRequest req)
             => DoTireBy(client, req, 0.5f);
 
-        public static void UpgradeAxe(ControlClient client,  EffectRequest req)
+        public static void UpgradeAxe(ControlClient client, EffectRequest req)
             => UpdateEquipment(client, req, "upgraded", "axes", "Axe");
 
-        public static void UpgradeBackpack(ControlClient client,  EffectRequest req)
+        public static void UpgradeBackpack(ControlClient client, EffectRequest req)
         {
             EffectStatus status = EffectStatus.Success;
             string message = "";
@@ -887,7 +892,7 @@ namespace CrowdControl
             client.Respond(req, status, message);
         }
 
-        public static void UpgradeBoots(ControlClient client,  EffectRequest req)
+        public static void UpgradeBoots(ControlClient client, EffectRequest req)
         {
             EffectStatus status = EffectStatus.Success;
             string message = "";
@@ -917,13 +922,13 @@ namespace CrowdControl
             client.Respond(req, status, message);
         }
         
-        public static void UpgradeHoe(ControlClient client,  EffectRequest req)
+        public static void UpgradeHoe(ControlClient client, EffectRequest req)
             => UpdateEquipment(client, req, "upgraded", "hoes", "Hoe");
 
-        public static void UpgradePickaxe(ControlClient client,  EffectRequest req)
+        public static void UpgradePickaxe(ControlClient client, EffectRequest req)
             => UpdateEquipment(client, req, "upgraded", "pickaxes", "Pickaxe");
 
-        public static void UpgradeTrashCan(ControlClient client,  EffectRequest req)
+        public static void UpgradeTrashCan(ControlClient client, EffectRequest req)
         {
 
             if (!Game1.player.canMove || Game1.player.IsBusyDoingSomething() || Game1.player.usingTool.Value)
@@ -949,7 +954,7 @@ namespace CrowdControl
             client.Respond(req, status, message);
         }
 
-        public static void UpgradeWeapon(ControlClient client,  EffectRequest req)
+        public static void UpgradeWeapon(ControlClient client, EffectRequest req)
         {
 
             if (!Game1.player.canMove || Game1.player.IsBusyDoingSomething() || Game1.player.usingTool.Value)
@@ -968,25 +973,25 @@ namespace CrowdControl
             client.Respond(req, EffectStatus.Failure, Game1.player.Name + "'s Weapon is already at the highest upgrade level");
         }
 
-        public static void UpgradeWateringCan(ControlClient client,  EffectRequest req)
+        public static void UpgradeWateringCan(ControlClient client, EffectRequest req)
             => UpdateEquipment(client, req, "upgraded", "wateringCans", "Watering Can");
 
-        public static void WarpBeach(ControlClient client,  EffectRequest req)
+        public static void WarpBeach(ControlClient client, EffectRequest req)
             => DoWarp(client, req, "Beach", 20, 4);
 
-        public static void WarpDesert(ControlClient client,  EffectRequest req)
+        public static void WarpDesert(ControlClient client, EffectRequest req)
             => DoWarp(client, req, "Desert", 35, 43);
 
-        public static void WarpFarm(ControlClient client,  EffectRequest req)
+        public static void WarpFarm(ControlClient client, EffectRequest req)
             => DoWarp(client, req, "Farm", 64, 15);
 
-        public static void WarpIsland(ControlClient client,  EffectRequest req)
+        public static void WarpIsland(ControlClient client, EffectRequest req)
             => DoWarp(client, req, "IslandSouth", 11, 11);
 
-        public static void WarpMountain(ControlClient client,  EffectRequest req)
+        public static void WarpMountain(ControlClient client, EffectRequest req)
             => DoWarp(client, req, "Mountain", 31, 20);
 
-        public static void WarpRailroad(ControlClient client,  EffectRequest req)
+        public static void WarpRailroad(ControlClient client, EffectRequest req)
         {
             if (Game1.stats.DaysPlayed < 31U)
             {
@@ -996,16 +1001,16 @@ namespace CrowdControl
             DoWarp(client, req, "Railroad", 35, 52);
         }
 
-        public static void WarpSewer(ControlClient client,  EffectRequest req)
+        public static void WarpSewer(ControlClient client, EffectRequest req)
             => DoWarp(client, req, "Sewer", 16, 13);
 
-        public static void WarpTower(ControlClient client,  EffectRequest req)
+        public static void WarpTower(ControlClient client, EffectRequest req)
             => DoWarp(client, req, "Forest", 5, 29);
 
-        public static void WarpTown(ControlClient client,  EffectRequest req)
+        public static void WarpTown(ControlClient client, EffectRequest req)
             => DoWarp(client, req, "Town", 29, 67);
 
-        public static void WarpWoods(ControlClient client,  EffectRequest req)
+        public static void WarpWoods(ControlClient client, EffectRequest req)
         {
             Forest? forest = (StardewValley.Locations.Forest)Game1.getLocationFromName("Forest");
 
@@ -1155,7 +1160,7 @@ namespace CrowdControl
                 client.Respond(req, EffectStatus.Retry, $"The {name} buff is already active.");
                 return;
             }
-            UI.ShowInfo($"{req.viewer} gave {Game1.player.Name} the {name} effect for {duration} seconds");
+            UI.ShowInfo($"{req.viewer} gave {Game1.player.Name} the {name} effect for {duration.TotalSeconds} seconds");
             client.Respond(req, EffectStatus.Success, duration);
         }
 
@@ -1237,9 +1242,6 @@ namespace CrowdControl
                 int showMessage = 0;
                 foreach (Monster monster in monsters)
                 {
-
-                    Random random = new Random();
-
                     Game1.currentLocation.addCharacter(monster);
                     client.TrackMonster(monster);
 
@@ -1251,12 +1253,9 @@ namespace CrowdControl
                     else if (quantity >= 1 && showMessage == 0)
                     {
                         showMessage = 1;
-                        UI.ShowInfo($"{req.viewer} spawned {quantity} {monster.Name}'s near {Game1.player.Name}");
+                        UI.ShowInfo($"{req.viewer} spawned {quantity} {monster.Name}s near {Game1.player.Name}");
                     }
-
                 }
-
-
             }
             else
             {
@@ -1315,7 +1314,7 @@ namespace CrowdControl
         }
 
 
-        public static void GiveSword(ControlClient client,  EffectRequest req)
+        public static void GiveSword(ControlClient client, EffectRequest req)
         {
             bool found = false;
 
@@ -1339,49 +1338,49 @@ namespace CrowdControl
             GiveItem(client, req, new MeleeWeapon("0"));
         }
 
-        public static void GiveCookie(ControlClient client,  EffectRequest req)
+        public static void GiveCookie(ControlClient client, EffectRequest req)
             => GiveItem(client, req, "223");
 
-        public static void GiveSuperMeal(ControlClient client,  EffectRequest req)
+        public static void GiveSuperMeal(ControlClient client, EffectRequest req)
             => GiveItem(client, req, "237");
 
-        public static void GiveDiamond(ControlClient client,  EffectRequest req)
+        public static void GiveDiamond(ControlClient client, EffectRequest req)
             => GiveItem(client, req, "72");
 
-        public static void GiveCopperBar(ControlClient client,  EffectRequest req)
+        public static void GiveCopperBar(ControlClient client, EffectRequest req)
             => GiveItem(client, req, "334");
 
-        public static void GiveIronBar(ControlClient client,  EffectRequest req)
+        public static void GiveIronBar(ControlClient client, EffectRequest req)
             => GiveItem(client, req, "335");
 
-        public static void GiveGoldBar(ControlClient client,  EffectRequest req)
+        public static void GiveGoldBar(ControlClient client, EffectRequest req)
             => GiveItem(client, req, "336");
 
-        public static void GiveWood(ControlClient client,  EffectRequest req)
+        public static void GiveWood(ControlClient client, EffectRequest req)
             => GiveItem(client, req, "388", 5);
 
-        public static void GiveStone(ControlClient client,  EffectRequest req)
+        public static void GiveStone(ControlClient client, EffectRequest req)
             => GiveItem(client, req, "390", 5);
 
-        public static void SantaMSG(ControlClient client,  EffectRequest req)
+        public static void SantaMSG(ControlClient client, EffectRequest req)
             => SendMail(client, req, "Dear @,^^    You have been very naughty this year, so all you get is this lump of coal.^^                                       -Santa%item object 382 1 %%", "Christmas");
 
-        public static void CarMSG(ControlClient client,  EffectRequest req)
+        public static void CarMSG(ControlClient client, EffectRequest req)
             => SendMail(client, req, "Hello @!^^    We have been trying to reach you about your car's extended warranty...", "car");
 
-        public static void PizzaMSG(ControlClient client,  EffectRequest req)
+        public static void PizzaMSG(ControlClient client, EffectRequest req)
             => SendMail(client, req, "I've got a uh... large pepperoni pizza for... @?^^That'll be $21.59.%item object 206 1 %%", "pizza");
 
-        public static void GrowMSG(ControlClient client,  EffectRequest req)
+        public static void GrowMSG(ControlClient client, EffectRequest req)
             => SendMail(client, req, "Do you have have sad crops that just take forever to grow?!^^You need Miracle Grow, the latest in fertilization technology!^^Try it today!%item object 368 1 %%", "grow");
 
-        public static void LotteryMSG(ControlClient client,  EffectRequest req)
+        public static void LotteryMSG(ControlClient client, EffectRequest req)
             => SendMail(client, req, "Mr. or Mrs. @,^^I am writing to inform you that you have won $100 in the Malaysian National lottery!^^To collect your winnings, please remit a $5 processing fee to the postmarked address.%item money 100 101 %%", "lottery");
 
-        public static void TechMSG(ControlClient client,  EffectRequest req)
+        public static void TechMSG(ControlClient client, EffectRequest req)
             => SendMail(client, req, $"Hello, is this @?^^This is {req.viewer} with Microsoft technical support and I am calling you today about a problem we have detected in your computer.^^If you could allow me to remote access your computer I can walk you through fixing the issue for a support fee of $1.99 a minute.", "tech");
 
-        public static void CrowdControlProMSG(ControlClient client,  EffectRequest req)
+        public static void CrowdControlProMSG(ControlClient client, EffectRequest req)
             => SendMail(client, req, "Dear @,^^    This is your reminder to purchase Crowd Control Pro!", "tech");
 
 
@@ -1422,40 +1421,40 @@ namespace CrowdControl
             client.Respond(req, status, message);
         }
 
-        public static void BrownHair(ControlClient client,  EffectRequest req)
+        public static void BrownHair(ControlClient client, EffectRequest req)
             => DoHairColor(client, req, new Color(0.4f, 0.2f, 0.1f));
 
-        public static void BlondeHair(ControlClient client,  EffectRequest req)
+        public static void BlondeHair(ControlClient client, EffectRequest req)
             => DoHairColor(client, req, new Color(1.0f, 0.85f, 0.55f));
 
-        public static void RedHair(ControlClient client,  EffectRequest req)
+        public static void RedHair(ControlClient client, EffectRequest req)
             => DoHairColor(client, req, new Color(1.0f, 0, 0));
 
-        public static void GreenHair(ControlClient client,  EffectRequest req)
+        public static void GreenHair(ControlClient client, EffectRequest req)
             => DoHairColor(client, req, new Color(0, 1.0f, 0));
 
-        public static void BlueHair(ControlClient client,  EffectRequest req)
+        public static void BlueHair(ControlClient client, EffectRequest req)
             => DoHairColor(client, req, new Color(0, 0, 1.0f));
 
-        public static void YellowHair(ControlClient client,  EffectRequest req)
+        public static void YellowHair(ControlClient client, EffectRequest req)
             => DoHairColor(client, req, new Color(1.0f, 1.0f, 0));
 
-        public static void PurpleHair(ControlClient client,  EffectRequest req)
+        public static void PurpleHair(ControlClient client, EffectRequest req)
             => DoHairColor(client, req, new Color(0.5f, 0, 1.0f));
 
-        public static void OrangeHair(ControlClient client,  EffectRequest req)
+        public static void OrangeHair(ControlClient client, EffectRequest req)
             => DoHairColor(client, req, new Color(1.0f, 0.45f, 0));
 
-        public static void TealHair(ControlClient client,  EffectRequest req)
+        public static void TealHair(ControlClient client, EffectRequest req)
             => DoHairColor(client, req, new Color(0, 1.0f, 1.0f));
 
-        public static void PinkHair(ControlClient client,  EffectRequest req)
+        public static void PinkHair(ControlClient client, EffectRequest req)
             => DoHairColor(client, req, new Color(1.0f, 0.5f, 0.8f));
 
-        public static void BlackHair(ControlClient client,  EffectRequest req)
+        public static void BlackHair(ControlClient client, EffectRequest req)
             => DoHairColor(client, req, new Color(0.15f, 0.15f, 0.15f));
 
-        public static void WhiteHair(ControlClient client,  EffectRequest req)
+        public static void WhiteHair(ControlClient client, EffectRequest req)
             => DoHairColor(client, req, new Color(1.0f, 1.0f, 1.0f));
 
         private static void DoHairColor(ControlClient client, EffectRequest req, Color c)
@@ -1470,7 +1469,7 @@ namespace CrowdControl
             client.Respond(req, status, message);
         }
 
-        public static void HairStyle(ControlClient client,  EffectRequest req)
+        public static void HairStyle(ControlClient client, EffectRequest req)
         {
             EffectStatus status = EffectStatus.Success;
             string message = "";
@@ -1482,7 +1481,7 @@ namespace CrowdControl
             client.Respond(req, status, message);
         }
 
-        public static void Gender(ControlClient client,  EffectRequest req)
+        public static void Gender(ControlClient client, EffectRequest req)
         {
             EffectStatus status = EffectStatus.Success;
             string message = "";
@@ -1541,61 +1540,24 @@ namespace CrowdControl
             client.Respond(req, status, message);
         }
 
-        private static readonly float MAX_RADIUS = 400;
+        private const int MAX_RADIUS = 200;
+        private const int MAX_SPAWN_ATTEMPTS = 10;
 
-        private static Random random = new Random();
-        private static Vector2 GetRandomNear(int attempt = 0)
+        private static readonly Random RNG = new();
+
+        private static bool TryGetRandomClose(out Vector2 result)
         {
-            const int MaxAttempts = 10;
-            float RADIUS = MAX_RADIUS + (MaxAttempts * 25);
-
-            Vector2 spawnVector = Game1.player.Position + new Vector2(
-                (float)((random.NextDouble() * 2 * RADIUS) - RADIUS),
-                (float)((random.NextDouble() * 2 * RADIUS) - RADIUS));
-
-            if (attempt >= MaxAttempts)
+            result = default;
+            for (int attempt = 0; attempt < MAX_SPAWN_ATTEMPTS; attempt++)
             {
-                //return spawnVector;
+                result = Game1.player.Position + new Vector2(RNG.Next(-MAX_RADIUS, MAX_RADIUS), RNG.Next(-MAX_RADIUS, MAX_RADIUS));
+                if (CanSpawnHere(result)) return true;
             }
 
-
-            if (CanSpawnHere(spawnVector))
-            {
-                return spawnVector;
-            }
-            else
-            {
-                return GetRandomNear(attempt + 1);
-            }
+            return false;
         }
 
-        private static Vector2 GetRandomClose(int attempt = 0)
-        {
-            const int MaxAttempts = 10;
-            float RADIUS = (MAX_RADIUS / 2) + (MaxAttempts * 25);
-
-            Vector2 spawnVector = Game1.player.Position + new Vector2(
-                (float)((random.NextDouble() * 2 * RADIUS) - RADIUS),
-                (float)((random.NextDouble() * 2 * RADIUS) - RADIUS));
-
-            if (attempt >= MaxAttempts)
-            {
-                return spawnVector;
-            }
-
-
-            if (CanSpawnHere(spawnVector))
-            {
-                return spawnVector;
-            }
-            else
-            {
-                return GetRandomClose(attempt + 1);
-            }
-        }
-
-
-        public static void HypeTrain(ControlClient client,  EffectRequest req)
+        public static void HypeTrain(ControlClient client, EffectRequest req)
         {
             if (!ModEntry.Instance.TrySetActive(req, typeof(EffectHypeTrain), out _))
             {
