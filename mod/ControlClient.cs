@@ -26,6 +26,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -226,8 +227,8 @@ namespace CrowdControl
 
         private void ClientLoop()
         {
-            ModEntry.Instance.Monitor.Log("Connected to Crowd Control");
-            UI.ShowInfo("Connected to Crowd Control");
+            ModEntry.Instance.Monitor.Log($"Connected to Crowd Control {ModEntry.Instance.VersionLabel}");
+            UI.ShowInfo($"Connected to Crowd Control {ModEntry.Instance.VersionLabel}");
             try
             {
                 while (Running)
@@ -245,8 +246,8 @@ namespace CrowdControl
             }
             catch (Exception)
             {
-                ModEntry.Instance.Monitor.Log("Disconnected from Crowd Control");
-                UI.ShowInfo("Disconnected from Crowd Control");
+                ModEntry.Instance.Monitor.Log($"Disconnected from Crowd Control {ModEntry.Instance.VersionLabel}");
+                UI.ShowInfo($"Disconnected from Crowd Control {ModEntry.Instance.VersionLabel}");
                 Socket?.Close();
             }
         }
@@ -369,6 +370,15 @@ namespace CrowdControl
                         req = Requests.Dequeue();
                     }
 
+                    if (req.type == RequestType.GameUpdate)
+                    {
+                        UpdateGameState(true);
+                        continue;
+                    }
+
+                    while (Saving || Game1.isTimePaused)
+                        Thread.Sleep(LOOP_YIELD_DELAY);
+
                     try
                     {
                         switch (req)
@@ -438,6 +448,66 @@ namespace CrowdControl
             if (!Monsters.ContainsKey(location))
                 Monsters[location] = new List<Monster>();
             Monsters[location].Add(monster);
+        }
+
+        private GameState? _last_game_state;
+
+        /// <summary>Whether the player can accept effects right now (matches common EffectDelegates checks).</summary>
+        public bool IsReadyForEffects()
+        {
+            try
+            {
+                if (Saving || Game1.isTimePaused) return false;
+                if (Game1.player == null) return false;
+                if (Game1.isFestival()) return false;
+                if (Game1.activeClickableMenu != null) return false;
+                if (!Game1.player.canMove || Game1.player.IsBusyDoingSomething() || Game1.player.usingTool.Value)
+                    return false;
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public GameState QueryGameState()
+        {
+            try
+            {
+                if (Saving) return GameState.Loading;
+                if (Game1.player == null) return GameState.WrongMode;
+                if (Game1.isTimePaused) return GameState.Paused;
+                if (Game1.isFestival()) return GameState.Cutscene;
+                if (Game1.activeClickableMenu != null) return GameState.Menu;
+                if (!Game1.player.canMove || Game1.player.IsBusyDoingSomething() || Game1.player.usingTool.Value)
+                    return GameState.BadPlayerState;
+                return GameState.Ready;
+            }
+            catch
+            {
+                return GameState.Unknown;
+            }
+        }
+
+        public void UpdateGameState(bool force = false)
+        {
+            if (Socket == null || !Socket.Connected) return;
+            UpdateGameState(QueryGameState(), force);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private bool UpdateGameState(GameState newState, bool force) => UpdateGameState(newState, null, force);
+
+        private bool UpdateGameState(GameState newState, string? message = null, bool force = false)
+        {
+            if (force || _last_game_state != newState)
+            {
+                _last_game_state = newState;
+                return Send(new GameUpdate(newState, message));
+            }
+
+            return true;
         }
     }
 }

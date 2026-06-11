@@ -10,6 +10,8 @@ public class StardewValley : SimpleTCPPack<SimpleTCPServerConnector>
 
     public override ushort Port => 51337;
 
+    protected override SITimeSpan GameStateCheckInterval { get; } = 0.5f;
+
     //public override ISimpleTCPPack.MessageFormatType MessageFormat => ISimpleTCPPack.MessageFormatType.CrowdControlLegacy;
 
     public StardewValley(UserRecord player, Func<CrowdControlBlock, bool> responseHandler, Action<object> statusUpdateHandler) : base(player, responseHandler, statusUpdateHandler) { }

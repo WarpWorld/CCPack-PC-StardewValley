@@ -41,6 +41,8 @@ namespace CrowdControl
 
         public ControlClient? Client { get; private set; }
 
+        internal string VersionLabel => $"v{ModManifest.Version}";
+
         public ConcurrentDictionary<Guid, Behavior> ActiveBehaviors { get; } = new();
 
         public ConcurrentDictionary<Type, Behavior> KnownBehaviors { get; } = new();
@@ -82,6 +84,8 @@ namespace CrowdControl
             TimedThread.Tick(Game1.currentGameTime);
             foreach (Behavior behavior in ActiveBehaviors.Values)
                 behavior.Update(Game1.currentGameTime);
+
+            Client?.UpdateGameState();
         }
 
         private void OnRendered(object? sender, RenderedEventArgs e)
@@ -109,6 +113,7 @@ namespace CrowdControl
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             
             if (!Context.IsWorldReady || Client != null) return;
+            Monitor.Log($"Starting Crowd Control {VersionLabel}", LogLevel.Info);
             Client = new ControlClient();
             Helper.Events.GameLoop.Saved += Client.OnSaved;
             Helper.Events.GameLoop.Saving += Client.OnSaving;
