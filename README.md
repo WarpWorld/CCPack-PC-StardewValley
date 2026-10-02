@@ -1,5 +1,13 @@
 # Stardew Valley
 
+## Pack metadata
+
+- **Game:** Stardew Valley
+- **Crowd Control game ID:** `StardewValley`
+- **Connector:** `SimpleTCPServerConnector`
+- **Port:** `51337`
+- **Mod framework:** SMAPI 4.1.10 or later
+
 This repository contains the Crowd Control pack and the **CrowdControl** SMAPI
 mod for Stardew Valley. The mod connects to the Crowd Control desktop app over
 the local JSON connector.
