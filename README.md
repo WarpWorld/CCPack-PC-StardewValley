@@ -1,27 +1,36 @@
-# Control Valley Mod - Crowd Control Edition
+# Stardew Valley
 
-This repository contains an updated and maintained version of the [Control Valley Mod](https://github.com/tesla1889tv/ControlValleyMod), now supported and managed by the **Crowd Control** team. This version ensures compatibility with the latest versions of Stardew Valley and Crowd Control features.
+This repository contains the Crowd Control pack and the **CrowdControl** SMAPI
+mod for Stardew Valley. The mod connects to the Crowd Control desktop app over
+the local JSON connector.
 
-## Repository Structure
+## Requirements
 
-- `/mod` - Contains the source files for the mod.
-- `/CrowdControl` - Includes the built mod files ready for use.
-- `StardewValley.cs` - The Crowd Control pack integration for the mod.
+- Stardew Valley with SMAPI installed.
+- SMAPI 4.1.10 or later, as declared by the included mod manifest.
+- Crowd Control with the **Stardew Valley** pack selected.
 
+## Installation and setup
 
-## Contribution
+1. Copy the included `CrowdControl` folder into Stardew Valley's `Mods`
+   directory. The folder must contain `manifest.json`, `CrowdControl.dll`, and
+   the included Crowd Control DLL dependencies.
+2. Launch Stardew Valley through SMAPI.
+3. Start the Crowd Control desktop app and select Stardew Valley.
+4. Load a save and return to normal gameplay before accepting effects.
 
-We welcome contributions! Feel free to submit issues, feature requests, or pull requests.
+## Connection behavior
 
-## Credits
+The mod connects to `127.0.0.1:51337`, where the Crowd Control pack listens.
+It reports loading while saving, pauses effects during menus or when time is
+paused, and reports a cutscene during festivals. Effects are ready only during
+an eligible gameplay state.
 
-- Original mod by **tesla1889tv** ([GitHub](https://github.com/tesla1889tv/ControlValleyMod))
-- Updated and maintained by the **Crowd Control** team
+## Troubleshooting
 
-## License
-
-This project follows the original licensing terms. Please refer to the original repository for more details.
-
----
-
-For questions or support, reach out to the Crowd Control team or open an issue in this repository. https://crowdcontrol.live
+- **The mod does not appear in SMAPI:** verify that the `CrowdControl` folder
+  is directly under `Mods`, not nested an extra directory deep.
+- **The app does not connect:** start Crowd Control, select the Stardew Valley
+  pack, then restart the game/mod so it can connect locally on port `51337`.
+- **Effects are waiting:** close menus and wait until saving, festivals, and
+  other paused states have ended.
